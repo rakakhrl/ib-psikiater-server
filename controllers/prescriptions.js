@@ -20,16 +20,32 @@ class PrescriptionsController {
   };
   static updatePrescriptionData = async (req, res, next) => {
     try {
+      const timeSequence = await PrescriptionsModel.findById(req.params.id);
+
+      const { drug_name, new_time_sequence, method_name } = req.body;
       const prescriptionsData = await PrescriptionsModel.findByIdAndUpdate(
         req.params.id,
         {
-          drug_name: req.body.drug_name,
+          drug_name: drug_name,
           consume_method: {
-            method_name: req.body.method_name,
-            time_sequence: [],
+            method_name: method_name,
+            time_sequence: [
+              ...timeSequence.consume_method.time_sequence,
+              new_time_sequence,
+            ],
           },
         }
       );
+
+      if (!prescriptionsData) {
+        throw new Error("Cannot update");
+      }
+
+      res.status(201).json({
+        status: "Success",
+        message: "Success update prescription data",
+        data: prescriptionsData,
+      });
     } catch (error) {
       next(error);
     }
