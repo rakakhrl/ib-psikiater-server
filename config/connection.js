@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const DB_URI = process.env.DB_URI;
 
-mongoose.connect("mongodb://localhost:27017/psikiater", {
+mongoose.connect(DB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -10,7 +11,7 @@ mongoose.connect("mongodb://localhost:27017/psikiater", {
 const db = mongoose.connection;
 
 db.once("open", function () {
-  console.log("conected to mongoDB_Atlas");
+  console.log("conected to mongoDB");
 });
 
 db.on("error", function (err) {
