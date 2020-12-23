@@ -20,8 +20,6 @@ const psikiatertSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      minlength: 3,
-      maxlength: 8,
     },
     email: {
       type: String,

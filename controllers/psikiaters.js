@@ -5,7 +5,7 @@ const psikiaterModel = require("../models/psikiater");
 class PsikiaterController {
   static register = async (req, res, next) => {
     try {
-      // const { username, password, role } = req.body;
+      const { username, password } = req.body;
       const psikiaterData = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,

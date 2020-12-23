@@ -21,7 +21,6 @@ const patientSchema = new mongoose.Schema(
       required: true,
       unique: true,
       minlength: 3,
-      maxlength: 8,
     },
     email: {
       type: String,
