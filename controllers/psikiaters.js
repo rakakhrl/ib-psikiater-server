@@ -1,83 +1,55 @@
 "use strict";
 const bcrypt = require("bcrypt");
-const psikiaterModel = require("../models/psikiater");
+const PsikiaterModel = require("../models/psikiaters");
 
 class PsikiaterController {
-  static register = async (req, res, next) => {
-    try {
-      // const { username, password, role } = req.body;
-      const psikiaterData = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        password: bcrypt.hashSync(req.body.password, 10),
-        email: req.body.email,
-        Date_of_birth: req.body.Date_of_birth,
-        gender: req.body.gender,
-        experience_year: req.body.experience_year,
-        region: req.body.region,
-      };
-      const psikiater = await psikiaterModel.create(psikiaterData);
-
-      res.status(200).json({
-        message: "Success To Create Psikiater Data",
-        psikiater: psikiater,
-      });
-      throw new Error("Unable To Create Psikiater Data");
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static login = async (req, res, next) => {
-    try {
-      const { username, password } = req.body;
-      const user = await userModel.findOne({
-        username: username,
-      });
-      if (!user) {
-        throw new Error("invalid username/password");
-      }
-      if (!bcrypt.compareSync(password, user.password)) {
-        throw new Error("invalid username/password");
-      }
-
-      const tokenPayload = {
-        userID: user._id,
-      };
-
-      const jwtToken = jwt.sign(tokenPayload, "r4hasi4");
-
-      res.status(200).json({
-        message: "login success",
-        accessToken: jwtToken,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   static updatePsikiaterData = async (req, res, next) => {
     try {
-      const psikiaterData = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        // password: bcrypt.hashSync(req.body.password),
-        email: req.body.email,
-        Date_of_birth: req.body.Date_of_birth,
-        gender: req.body.gender,
-        experience_year: req.body.experience_year,
-        region: req.body.region,
-      };
-
-      const psikiater = await psikiaterModel.updateOne(
+      const psikiaterData = await PsikiaterModel.findByIdAndUpdate(
         req.params.id,
-        psikiaterData
+        {
+          status: req.body.status,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          password: req.body.password,
+          date_of_birth: req.body.date_of_birth,
+          info: {
+            experience_year: req.body.info.experience_year,
+            region: req.body.info.region,
+          },
+          work_address: req.body.work_address,
+          gender: req.body.gender,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
       );
+      if (!psikiaterData) {
+        throw new Error("Unable update data");
+      }
+
       res.status(201).json({
-        message: "Success Update Psikiater Data",
-        psikiaterData: psikiater,
+        status: "Success",
+        message: "Data was updated",
+        data: psikiaterData,
       });
-      throw new Error("Unable To Update Psikiater Data");
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static uploadAvatar = async (req, res, next) => {
+    try {
+      const uploadAvatar = await PsikiaterModel.create();
+
+      res.status(201).json({
+        status: "Success",
+        message: "Upload Succeed",
+        data: uploadAvatar,
+        file: req.file,
+      });
     } catch (error) {
       next(error);
     }
@@ -85,9 +57,16 @@ class PsikiaterController {
 
   static getPsikiaterData = async (req, res, next) => {
     try {
-      const psikiaterData = await psikiaterModel.find();
+      const psikiaterData = await PsikiaterModel.find();
+
+      if (!psikiaterData) {
+        throw new Error("Unable to get psikiater data");
+      }
+
       res.status(200).json({
-        psikiaterData: psikiaterData,
+        status: "Success",
+        message: "Success get psikiater data",
+        data: psikiaterData,
       });
     } catch (error) {
       next(error);
@@ -95,14 +74,19 @@ class PsikiaterController {
   };
   static deletePsikiaterData = async (req, res, next) => {
     try {
-      const psikiaterData = await psikiaterModel.findByIdAndDelete(
+      const psikiaterData = await PsikiaterModel.findByIdAndDelete(
         req.params.id
       );
+
+      if (!psikiaterData) {
+        throw new Error("Data already deleted");
+      }
+
       res.status(200).json({
-        message: "Data Deleted",
-        psikiaterData: psikiaterData,
+        status: "Success",
+        message: "Data deleted",
+        data: psikiaterData,
       });
-      throw new Error("Unable To Delete");
     } catch (error) {
       next(error);
     }

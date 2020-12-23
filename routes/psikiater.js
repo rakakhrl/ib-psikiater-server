@@ -1,15 +1,15 @@
 const Router = require("express").Router();
-const { deletePsikiaterData } = require("../controllers/psikiaters");
 const psikiaterController = require("../controllers/psikiaters");
+const upload = require("../middlewares/multer");
 // const authorization = require("../middlewares/authorization");
 // const authentication = require("../middlewares/authentication");
-
-Router.get("/", psikiaterController.getPsikiaterData);
-
-Router.post("/register", psikiaterController.register);
-
 Router.patch("/:id", psikiaterController.updatePsikiaterData);
-
+Router.post(
+  "/upload",
+  upload.single("Avatar"),
+  psikiaterController.uploadAvatar
+);
+Router.get("/", psikiaterController.getPsikiaterData);
 Router.delete("/:id", psikiaterController.deletePsikiaterData);
 
 module.exports = Router;

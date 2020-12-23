@@ -2,19 +2,33 @@ const mongoose = require("mongoose");
 
 const psikiatertSchema = new mongoose.Schema(
   {
+    status: {
+      type: Boolean,
+    },
     first_name: {
       type: String,
-      required: true,
-      unique: true,
-      minlength: 5,
-      maxlength: 10,
-    },
-    last_name: {
-      type: String,
-      required: true,
+      required: "First Name Is Required",
       unique: true,
       minlength: 3,
       maxlength: 10,
+      validate: {
+        validator: (v) => {
+          return /^[A-Z]/.test(v);
+        },
+        message: "First Letter Must Capital",
+      },
+    },
+    last_name: {
+      type: String,
+      required: "Last Name Is Required",
+      unique: true,
+      minlength: 3,
+      maxlength: 10,
+      validate: {
+        validator: (v) => {
+          return /^[A-Z]/.test(v);
+        },
+      },
     },
     password: {
       type: String,
@@ -34,7 +48,7 @@ const psikiatertSchema = new mongoose.Schema(
         message: `invalid email format`,
       },
     },
-    Date_of_birth: {
+    date_of_birth: {
       type: Date,
       required: true,
     },
@@ -42,13 +56,21 @@ const psikiatertSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    experience_year: {
-      type: String,
-      required: true,
+    avatar_url: String,
+
+    info: {
+      experience_year: {
+        type: String,
+        required: true,
+      },
+      region: {
+        type: String,
+        required: true,
+      },
     },
-    region: {
-      type: String,
-      required: true,
+    schedule: {
+      work_days: [String],
+      work_time: [String],
     },
   },
   {
@@ -56,6 +78,8 @@ const psikiatertSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+//virtual rating
 
 const Psikiaters = mongoose.model("Psikiaters", psikiatertSchema);
 module.exports = Psikiaters;
