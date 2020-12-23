@@ -1,9 +1,9 @@
 "use strict";
 
 const errorHandler = (err, req, res, next) => {
-  console.log("error");
-  res.status(400).json({
-    message: err.message,
+  console.log(err.message);
+  res.status(500).json({
+    message: err.message || "Internal Server Error",
   });
 };
 
