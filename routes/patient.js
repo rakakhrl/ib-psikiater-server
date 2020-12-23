@@ -5,6 +5,4 @@ const psikiaterController = require("../controllers/psikiaters");
 
 Router.get("/", psikiaterController.getPsikiaterData);
 
-Router.post("/register", psikiaterController.register);
-
 module.exports = Router;

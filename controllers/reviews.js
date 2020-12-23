@@ -6,6 +6,8 @@ class ReviewController {
     try {
       const reviewData = await reviewModel.find();
       res.status(200).json({
+        status: "Success.",
+        message: "Successfully get review data.",
         reviewData: reviewData,
       });
     } catch (error) {
