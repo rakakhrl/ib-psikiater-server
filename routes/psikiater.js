@@ -5,8 +5,8 @@ const upload = require("../middlewares/multer");
 // const authentication = require("../middlewares/authentication");
 Router.patch("/:id", psikiaterController.updatePsikiaterData);
 Router.post(
-  "/upload",
-  upload.single("Avatar"),
+  "/upload/:id",
+  upload.single("profile_photo"),
   psikiaterController.uploadAvatar
 );
 Router.get("/", psikiaterController.getPsikiaterData);

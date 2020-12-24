@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 const psikiatertSchema = new mongoose.Schema(
   {
-    status: {
+    is_active: {
       type: Boolean,
+      default: true,
     },
     first_name: {
       type: String,
@@ -56,16 +57,27 @@ const psikiatertSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    avatar_url: String,
-
+    avatar_url: {
+      type: String,
+      unique: true,
+      default: "",
+    },
     info: {
       experience_year: {
         type: String,
         required: true,
+        //validator : regex => pertama angka setelahnya huruf
       },
       region: {
         type: String,
         required: true,
+        maxlength: 10,
+        validate: {
+          validator: (v) => {
+            return /^[A-Z]/.test(v);
+          },
+          message: "First Letter Must Capital",
+        },
       },
     },
     schedule: {
