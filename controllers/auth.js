@@ -5,28 +5,36 @@ const jwt = require("jsonwebtoken");
 
 class AuthController {
   static registerPatient = async (req, res, next) => {
+    const {
+      first_name,
+      last_name,
+      email,
+      password,
+      Date_of_birth,
+      gender,
+      avatar_url,
+      address,
+      diagnose_name,
+      diagnose_date,
+      psikiater_id,
+    } = req.body;
+
     try {
       const patientData = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-        Date_of_birth: req.body.Date_of_birth,
-        avatar_url: req.body.avatar_url,
-        address: req.body.address,
-        diagnose: {
-          diagnose_name: {
-            type: String,
-          },
-          diagnose_date: {
-            type: Date,
-          },
-          psikiater_id: {
-            type: String,
-          },
-        },
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        password: bcrypt.hashSync(password, 10),
+        Date_of_birth: Date_of_birth,
+        gender: gender,
+        avatar_url: avatar_url,
+        address: address,
+        diagnose_name: diagnose_name,
+        diagnose_date: diagnose_date,
+        psikiater_id: psikiater_id,
       };
-      const patient = await userModel.create(patientData);
+
+      const patient = await PatientsModel.create(patientData);
 
       res.status(201).json({
         status: "Success",

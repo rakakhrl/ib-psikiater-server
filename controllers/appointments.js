@@ -4,7 +4,10 @@ const appointmentModel = require("../models/appointments");
 class AppointmentController {
   static getAppointmentData = async (req, res, next) => {
     try {
-      const AppointmentData = await appointmentModel.find();
+      const { id } = req.param;
+      const AppointmentData = await appointmentModel.findById({
+        patient_id: id,
+      });
       res.status(200).json({
         status: "Success",
         message: "Success get appointment data.",

@@ -3,13 +3,13 @@ const bcrypt = require("bcrypt");
 const patientModel = require("../models/patients");
 
 class PatientController {
-  static getPsikiaterData = async (req, res, next) => {
+  static getPatientData = async (req, res, next) => {
     try {
-      const psikiaterData = await psikiaterModel.find();
+      const patientData = await patientModel.find();
       res.status(201).json({
         status: "success",
         message: "Successfully get patients data.",
-        data: psikiaterData,
+        data: patientData,
       });
     } catch (error) {
       next(error);
