@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, `uploads`)));
 
 app.use(router);
 
-Router.get("/media/:filename", (req, res) => {
+app.use("/media/:filename", (req, res) => {
   res.sendFile(path.join(__dirname, `/uploads/${req.params.filename}`));
 });
 
