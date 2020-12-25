@@ -23,8 +23,4 @@ Router.use("/schedule", scheduleRouter);
 
 Router.use("/prescriptions", prescriptionRouter);
 
-Router.get("/media/:filename", (req, res) => {
-  res.sendFile(path.join(__dirname, `/uploads/${req.params.filename}`));
-});
-
 module.exports = Router;

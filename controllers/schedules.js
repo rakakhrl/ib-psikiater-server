@@ -21,7 +21,7 @@ class ScheduleController {
         throw new Error("Unable to update schedule");
       }
 
-      res.status(201).json({
+      res.status(200).json({
         status: "Success",
         message: "Success update schedule",
         data: scheduleData,

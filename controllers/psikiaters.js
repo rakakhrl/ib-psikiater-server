@@ -70,7 +70,7 @@ class PsikiaterController {
         throw new Error("Please insert photo");
       }
 
-      res.status(201).json({
+      res.status(200).json({
         status: "Success",
         message: "Upload Success",
         data: uploadAvatar,
