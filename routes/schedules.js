@@ -1,8 +1,8 @@
 const Router = require("express").Router();
 const controller = require("../controllers/schedules");
+const authorization = require("../middlewares/authorization");
 
-// Router.post("/", controller.createSchedule);
-Router.get("/", controller.getSchedule);
-Router.patch("/:id", controller.updateSchedule);
+Router.use(authorization("Psikiater"));
 
+Router.patch("/:id", controller.updateSchedulePsikiater);
 module.exports = Router;

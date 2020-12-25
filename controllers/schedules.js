@@ -1,15 +1,15 @@
 const PsikiaterModel = require("../models/psikiaters");
 
 class ScheduleController {
-  static updateSchedule = async (req, res, next) => {
+  static updateSchedulePsikiater = async (req, res, next) => {
     try {
       const { work_days, work_time } = req.body;
       const scheduleData = await PsikiaterModel.findByIdAndUpdate(
         req.params.id,
         {
           schedule: {
-            work_days: [work_days],
-            work_time: [work_time],
+            work_days: work_days,
+            work_time: work_time,
           },
         },
         {

@@ -1,4 +1,5 @@
 const PsikiaterModel = require("../models/psikiaters");
+const PORT = process.env.PORT;
 
 class PsikiaterController {
   static updatePsikiaterData = async (req, res, next) => {
@@ -58,7 +59,7 @@ class PsikiaterController {
       const uploadAvatar = await PsikiaterModel.findByIdAndUpdate(
         req.params.id,
         {
-          avatar_url: `http://localhost/media/${filename}`,
+          avatar_url: `http://localhost:${PORT}/media/${filename}`,
         },
         {
           new: true,
@@ -79,9 +80,13 @@ class PsikiaterController {
     }
   };
 
-  static getPsikiaterData = async (req, res, next) => {
+  static getPsikiaterDataByRegion = async (req, res, next) => {
     try {
-      const psikiaterData = await PsikiaterModel.find();
+      const psikiaterData = await PsikiaterModel.find({
+        info: {
+          region: req.params.region,
+        },
+      });
 
       if (!psikiaterData) {
         throw new Error("Unable to get psikiater data");

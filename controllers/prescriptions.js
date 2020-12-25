@@ -4,6 +4,7 @@ class PrescriptionsController {
   static createPrescription = async (req, res, next) => {
     try {
       const { drug_name, method_name, time_sequence } = req.body;
+
       const prescriptionData = await PrescriptionsModel.create({
         drugs: {
           drug_name: drug_name,
@@ -13,6 +14,10 @@ class PrescriptionsController {
           },
         },
       });
+
+      if (!prescriptionData) {
+        throw new Error("Unable to add prescription");
+      }
 
       res.status(201).json({
         status: "Success",

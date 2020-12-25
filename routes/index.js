@@ -7,7 +7,11 @@ const scheduleRouter = require("./schedules");
 const prescriptionRouter = require("./prescriptions");
 const path = require("path");
 
+const authentication = require("../middlewares/authentication");
+
 Router.use("/auth", authRoutes);
+
+Router.use(authentication);
 
 Router.use("/reviews", reviewRouter);
 
