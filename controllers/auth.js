@@ -1,5 +1,5 @@
 const PatientsModel = require("../models/patients");
-const PsikiaterModel = require("../models/psikiater");
+const PsikiaterModel = require("../models/psikiaters");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -18,12 +18,14 @@ class AuthController {
       const psikiaterData = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        password: bcrypt.hashSync(req.body.password),
+        password: bcrypt.hashSync(req.body.password, 10),
         email: req.body.email,
-        Date_of_birth: req.body.Date_of_birth,
+        date_of_birth: req.body.date_of_birth,
         gender: req.body.gender,
-        experience_year: req.body.experience_year,
-        region: req.body.region,
+        info: {
+          experience_year: req.body.experience_year,
+          region: req.body.region,
+        },
       };
       const psikiater = await PsikiaterModel.create(psikiaterData);
 

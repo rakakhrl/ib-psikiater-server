@@ -2,26 +2,39 @@ const mongoose = require("mongoose");
 
 const psikiatertSchema = new mongoose.Schema(
   {
+    is_active: {
+      type: Boolean,
+      default: true,
+    },
     first_name: {
       type: String,
-      required: true,
-      unique: true,
-      minlength: 5,
-      maxlength: 10,
-    },
-    last_name: {
-      type: String,
-      required: true,
+      required: "First Name Is Required",
       unique: true,
       minlength: 3,
       maxlength: 10,
+      validate: {
+        validator: (v) => {
+          return /^[A-Z]/.test(v);
+        },
+        message: "First Letter Must Capital",
+      },
+    },
+    last_name: {
+      type: String,
+      required: "Last Name Is Required",
+      unique: true,
+      minlength: 3,
+      maxlength: 10,
+      validate: {
+        validator: (v) => {
+          return /^[A-Z]/.test(v);
+        },
+      },
     },
     password: {
       type: String,
       required: true,
       unique: true,
-      minlength: 3,
-      maxlength: 8,
     },
     email: {
       type: String,
@@ -36,7 +49,7 @@ const psikiatertSchema = new mongoose.Schema(
         message: `invalid email format`,
       },
     },
-    Date_of_birth: {
+    date_of_birth: {
       type: Date,
       required: true,
     },
@@ -44,13 +57,32 @@ const psikiatertSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    experience_year: {
+    avatar_url: {
       type: String,
-      required: true,
+      unique: true,
+      default: "",
     },
-    region: {
-      type: String,
-      required: true,
+    info: {
+      experience_year: {
+        type: String,
+        required: true,
+        //validator : regex => pertama angka setelahnya huruf
+      },
+      region: {
+        type: String,
+        required: true,
+        maxlength: 10,
+        validate: {
+          validator: (v) => {
+            return /^[A-Z]/.test(v);
+          },
+          message: "First Letter Must Capital",
+        },
+      },
+    },
+    schedule: {
+      work_days: [String],
+      work_time: [String],
     },
   },
   {
@@ -58,6 +90,8 @@ const psikiatertSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+//virtual rating
 
 const Psikiaters = mongoose.model("Psikiaters", psikiatertSchema);
 module.exports = Psikiaters;
