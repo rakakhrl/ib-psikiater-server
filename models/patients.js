@@ -33,7 +33,7 @@ const patientSchema = new mongoose.Schema(
         message: `invalid email format`,
       },
     },
-    Date_of_birth: {
+    date_of_birth: {
       type: Date,
       required: true,
     },
@@ -43,6 +43,7 @@ const patientSchema = new mongoose.Schema(
     },
     avatar_url: {
       type: String,
+      default: "",
     },
     address: {
       type: String,
@@ -51,13 +52,15 @@ const patientSchema = new mongoose.Schema(
     diagnose: {
       diagnose_name: {
         type: String,
+        default: "",
       },
       diagnose_date: {
         type: Date,
+        default: "",
       },
       psikiater_id: {
         type: mongoose.Types.ObjectId,
-        ref: "psikiater_id",
+        ref: "Psikiaters",
       },
     },
   },

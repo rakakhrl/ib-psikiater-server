@@ -1,25 +1,18 @@
 const mongoose = require("mongoose");
 
-const psikiatertSchema = new mongoose.Schema(
+const psikiaterSchema = new mongoose.Schema(
   {
     first_name: {
       type: String,
       required: true,
-      unique: true,
       minlength: 5,
       maxlength: 10,
     },
     last_name: {
       type: String,
       required: true,
-      unique: true,
       minlength: 3,
       maxlength: 10,
-    },
-    password: {
-      type: String,
-      required: true,
-      unique: true,
     },
     email: {
       type: String,
@@ -34,7 +27,12 @@ const psikiatertSchema = new mongoose.Schema(
         message: `invalid email format`,
       },
     },
-    Date_of_birth: {
+    password: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    date_of_birth: {
       type: Date,
       required: true,
     },
@@ -42,13 +40,43 @@ const psikiatertSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    experience_year: {
+    avatar_url: {
       type: String,
-      required: true,
+      default: "",
     },
-    region: {
-      type: String,
-      required: true,
+    info: {
+      experience_year: {
+        type: String,
+        required: true,
+      },
+      region: {
+        type: String,
+        required: true,
+      },
+    },
+    schedule: {
+      work_days: [
+        {
+          type: String,
+          default: "",
+        },
+      ],
+      work_time: [
+        {
+          type: String,
+          default: "",
+        },
+      ],
+    },
+    rating: {
+      average_rating: {
+        type: Number,
+        default: 0,
+      },
+      total_review: {
+        type: Number,
+        default: 0,
+      },
     },
   },
   {
@@ -57,5 +85,5 @@ const psikiatertSchema = new mongoose.Schema(
   }
 );
 
-const Psikiaters = mongoose.model("Psikiaters", psikiatertSchema);
+const Psikiaters = mongoose.model("Psikiaters", psikiaterSchema);
 module.exports = Psikiaters;

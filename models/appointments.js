@@ -3,16 +3,16 @@ const mongoose = require("mongoose");
 const appointmentSchema = new mongoose.Schema(
   {
     psikiater_id: {
-      type: mongoose.Types.ObjectId,
-      ref: "psikiater_id",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Psikiaters",
     },
     patient_id: {
-      type: mongoose.Types.ObjectId,
-      ref: "patient_id",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patients",
     },
     prescription_id: {
-      type: mongoose.Types.ObjectId,
-      ref: "prescription_id",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prescriptions",
     },
     appoinment_date: {
       type: Date,
@@ -29,6 +29,7 @@ const appointmentSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      default: "",
     },
   },
   {
