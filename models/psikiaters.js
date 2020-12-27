@@ -82,11 +82,11 @@ const psikiatertSchema = new mongoose.Schema(
     },
     schedule: {
       work_days: {
-        type: Array,
+        type: [String],
         default: [],
       },
       work_time: {
-        type: Array,
+        type: [String],
         default: [],
       },
     },
