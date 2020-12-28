@@ -14,7 +14,7 @@ const authentication = async (req, res, next) => {
     }
     const { user_id, role } = jwt.verify(accesstoken, SECRET_KEY);
 
-    if (role !== PATIENT || role !== PSIKIATER) {
+    if (role !== PATIENT && role !== PSIKIATER) {
       throw new Error("JWT Malformed");
     }
 
