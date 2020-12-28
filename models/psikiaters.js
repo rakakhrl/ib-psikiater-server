@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const psikiaterSchema = new mongoose.Schema(
+const psikiatertSchema = new mongoose.Schema(
   {
     is_active: {
       type: Boolean,
@@ -75,7 +75,11 @@ const psikiaterSchema = new mongoose.Schema(
   }
 );
 
-//virtual rating
+// psikiatertSchema.pre("save", function (next) {
+//   // capitalize
+//   (v) => this.info.region.charAt(0).toUpperCase(v);
+//   next();
+// });
 
-const Psikiaters = mongoose.model("Psikiaters", psikiaterSchema);
+const Psikiaters = mongoose.model("Psikiaters", psikiatertSchema);
 module.exports = Psikiaters;

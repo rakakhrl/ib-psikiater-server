@@ -1,49 +1,15 @@
 "use strict";
-const PatientModel = require("../models/patients");
-const PORT = process.env.PORT;
+const bcrypt = require("bcrypt");
+const patientModel = require("../models/patients");
 
 class PatientController {
-  static getPatientDataByIdPatient = async (req, res, next) => {
+  static getPsikiaterData = async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const patientData = await PatientModel.findById(id);
-
-      if (!patientData) {
-        throw new Error("Data patient not found.");
-      }
-
+      const psikiaterData = await psikiaterModel.find();
       res.status(200).json({
         status: "success",
-        message: "Successfully get patients data by id patient.",
-        data: patientData,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static uploadAvatar = async (req, res, next) => {
-    try {
-      const { filename } = req.file;
-
-      const uploadAvatar = await PatientModel.findByIdAndUpdate(
-        req.params.id,
-        {
-          avatar_url: `http://localhost:${PORT}/media/${filename}`,
-        },
-        {
-          new: true,
-        }
-      );
-
-      if (!uploadAvatar) {
-        throw new Error("Please insert photo");
-      }
-
-      res.status(200).json({
-        status: "Success",
-        message: "Upload Success",
-        data: uploadAvatar,
+        message: "Successfully get patients data.",
+        data: psikiaterData,
       });
     } catch (error) {
       next(error);

@@ -1,12 +1,10 @@
 const Router = require("express").Router();
 const reviewController = require("../controllers/reviews");
-const authorization = require("../middlewares/authorization");
-const { PATIENT, PSIKIATER } = require("../constants/role");
+// const authorization = require("../middlewares/authorization");
+// const authentication = require("../middlewares/authentication");
 
-Router.get("/psikiater/:id", reviewController.getReviewDataByIdPsikiater);
+Router.get("/", reviewController.getReviewData);
 
-Router.get("/patient/:id", reviewController.getReviewDataByIdPatient);
-
-Router.post("/", authorization(PATIENT), reviewController.createReview);
+Router.post("/", reviewController.createReview);
 
 module.exports = Router;
