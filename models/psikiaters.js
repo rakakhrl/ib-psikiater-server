@@ -48,8 +48,7 @@ const psikiatertSchema = new mongoose.Schema(
     },
     avatar_url: {
       type: String,
-      unique: true,
-      default: "",
+      default: " ",
     },
     info: {
       experience_year: {
