@@ -2,12 +2,48 @@ const PatientsModel = require("../models/patients");
 const PsikiaterModel = require("../models/psikiaters");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const SECRET_KEY = process.env.SECRET_KEY;
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
 class AuthController {
   static registerPatient = async (req, res, next) => {
+    const {
+      first_name,
+      last_name,
+      email,
+      password,
+      date_of_birth,
+      gender,
+      address,
+    } = req.body;
+
     try {
-      // TODO: Handle registration for patient
+      const patientData = {
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        password: bcrypt.hashSync(password, 10),
+        date_of_birth: date_of_birth,
+        gender: gender,
+        address: address,
+      };
+
+      const patient = await PatientsModel.create(patientData);
+
+      const tokenPayload = {
+        user_id: patient._id,
+        role: PATIENT,
+      };
+
+      const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
+
+      res.status(201).json({
+        status: "Success",
+        message: "Success create patient data.",
+        data: patient,
+        role: PATIENT,
+        token: jwtToken,
+      });
     } catch (error) {
       next(error);
     }
@@ -15,25 +51,46 @@ class AuthController {
 
   static registerPsikiater = async (req, res, next) => {
     try {
-      // const { username, password, role } = req.body;
+      const {
+        first_name,
+        last_name,
+        password,
+        email,
+        date_of_birth,
+        work_address,
+        gender,
+        experience_year,
+        region,
+      } = req.body;
+
       const psikiaterData = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        password: bcrypt.hashSync(req.body.password, 10),
-        email: req.body.email,
-        date_of_birth: req.body.date_of_birth,
-        gender: req.body.gender,
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        password: bcrypt.hashSync(password, 10),
+        date_of_birth: date_of_birth,
+        work_address: work_address,
+        gender: gender,
         info: {
-          experience_year: req.body.experience_year,
-          region: req.body.region,
+          experience_year: experience_year,
+          region: region,
         },
       };
       const psikiater = await PsikiaterModel.create(psikiaterData);
 
+      const tokenPayload = {
+        user_id: psikiater._id,
+        role: PSIKIATER,
+      };
+
+      const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
+
       res.status(201).json({
         status: "created",
         message: "Success create psikiater data.",
-        psikiater: psikiater,
+        role: PSIKIATER,
+        data: psikiater,
+        token: jwtToken,
       });
     } catch (error) {
       next(error);

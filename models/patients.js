@@ -2,26 +2,23 @@ const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema(
   {
+    is_active: {
+      type: Boolean,
+      default: true,
+    },
     first_name: {
       type: String,
       required: true,
-      unique: true,
-      minlength: 5,
-      maxlength: 10,
+      maxlength: 30,
     },
     last_name: {
       type: String,
       required: true,
-      unique: true,
-      minlength: 3,
       maxlength: 10,
     },
     password: {
       type: String,
       required: true,
-      unique: true,
-      minlength: 3,
-      maxlength: 8,
     },
     email: {
       type: String,
@@ -36,7 +33,7 @@ const patientSchema = new mongoose.Schema(
         message: `invalid email format`,
       },
     },
-    Date_of_birth: {
+    date_of_birth: {
       type: Date,
       required: true,
     },
@@ -46,22 +43,11 @@ const patientSchema = new mongoose.Schema(
     },
     avatar_url: {
       type: String,
+      default: "",
     },
     address: {
       type: String,
       required: true,
-    },
-    diagnose: {
-      diagnose_name: {
-        type: String,
-      },
-      diagnose_date: {
-        type: Date,
-      },
-      psikiater_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "psikiater_id",
-      },
     },
   },
   {
