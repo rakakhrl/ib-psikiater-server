@@ -1,6 +1,5 @@
 "use strict";
 const AppointmentModel = require("../models/appointments");
-const { all } = require("../routes");
 
 class AppointmentController {
   static getAppointmentDataByPatientId = async (req, res, next) => {
@@ -75,8 +74,8 @@ class AppointmentController {
     try {
       const { id } = req.params;
       const { status } = req.body;
-      const AppointmentData = await AppointmentModel.findOneAndUpdate(
-        { patient_id: id },
+      const AppointmentData = await AppointmentModel.findByIdAndUpdate(
+        id,
         { status: status },
         { new: true }
       );
@@ -90,19 +89,19 @@ class AppointmentController {
     }
   };
 
-  static updateDiagnoseByidPatient = async (req, res, next) => {
+  static updateDiagnose = async (req, res, next) => {
     try {
       const { id } = req.params;
       const { diagnose_name, diagnose_date } = req.body;
-      const patientData = await PatientModel.findOneAndUpdate(
-        { patient_id: id },
+      const AppointmentData = await AppointmentModel.findByIdAndUpdate(
+        id,
         { diagnose_name: diagnose_name, diagnose_date: diagnose_date },
         { new: true }
       );
       res.status(200).json({
         status: "success",
         message: "Successfully update diagnose data.",
-        data: patientData,
+        data: AppointmentData,
       });
     } catch (error) {
       next(error);

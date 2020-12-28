@@ -13,7 +13,7 @@ Router.post(
 Router.patch(
   "/update/:id",
   authorization(PSIKIATER),
-  AppointmentController.updateDiagnoseByidPatient
+  AppointmentController.updateDiagnose
 );
 
 Router.get("/patient/:id", AppointmentController.getAppointmentDataByPatientId);
