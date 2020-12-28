@@ -7,7 +7,10 @@ class AppointmentController {
       const { id } = req.params;
       const AppointmentData = await AppointmentModel.findOne({
         patient_id: id,
-      });
+      })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
         status: "Success",
         message: "Success get appointment data.",
@@ -23,7 +26,10 @@ class AppointmentController {
       const { id } = req.params;
       const AppointmentData = await AppointmentModel.findOne({
         psikiater_id: id,
-      });
+      })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
         status: "Success",
         message: "Success get appointment data.",
@@ -59,12 +65,20 @@ class AppointmentController {
           diagnose_date: diagnose_date,
         },
       };
-      const appointment = await AppointmentModel.create(appointmentData);
-      res.status(201).json({
-        status: "Success.",
-        message: "Success create appointment.",
-        data: appointment,
-      });
+      const appointment = await AppointmentModel.create(appointmentData)
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
+      res
+        .status(201)
+        .json({
+          status: "Success.",
+          message: "Success create appointment.",
+          data: appointment,
+        })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
     } catch (error) {
       next(error);
     }
@@ -78,7 +92,10 @@ class AppointmentController {
         id,
         { status: status },
         { new: true }
-      );
+      )
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
         status: "Success",
         message: "Success get appointment data.",
@@ -97,7 +114,10 @@ class AppointmentController {
         id,
         { diagnose_name: diagnose_name, diagnose_date: diagnose_date },
         { new: true }
-      );
+      )
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
         status: "success",
         message: "Successfully update diagnose data.",

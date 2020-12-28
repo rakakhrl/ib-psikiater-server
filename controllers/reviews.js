@@ -6,7 +6,10 @@ class ReviewController {
     try {
       const { id } = req.params;
 
-      const reviewData = await ReviewModel.find({ psikiater_id: id });
+      const reviewData = await ReviewModel.find({ psikiater_id: id })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
         status: "Success.",
         message: "Successfully get review data.",
@@ -20,7 +23,10 @@ class ReviewController {
   static getReviewDataByIdPatient = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const reviewData = await ReviewModel.find({ patient_id: id });
+      const reviewData = await ReviewModel.find({ patient_id: id })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
         status: "Success.",
         message: "Successfully get review data.",
@@ -47,7 +53,10 @@ class ReviewController {
         rating: rating,
         feedback: feedback,
       };
-      const review = await ReviewModel.create(reviewData);
+      const review = await ReviewModel.create(reviewData)
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
 
       res.status(201).json({
         status: "Success.",

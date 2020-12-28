@@ -14,7 +14,6 @@ const patientSchema = new mongoose.Schema(
     last_name: {
       type: String,
       required: true,
-
       maxlength: 10,
     },
     password: {

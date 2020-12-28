@@ -11,7 +11,7 @@ Router.post(
 );
 
 Router.patch(
-  "/update/:id",
+  "/diagnose/:id",
   authorization(PSIKIATER),
   AppointmentController.updateDiagnose
 );
@@ -20,11 +20,12 @@ Router.get("/patient/:id", AppointmentController.getAppointmentDataByPatientId);
 
 Router.get(
   "/psikiater/:id",
+  authorization(PSIKIATER),
   AppointmentController.getAppointmentDataByPsikiaterId
 );
 
 Router.patch(
-  "/:id",
+  "/status/:id",
   authorization(PSIKIATER),
   AppointmentController.updateStatusAppointmentByIdPatient
 );
