@@ -42,10 +42,6 @@ const appointmentSchema = new mongoose.Schema(
         type: Date,
         default: "",
       },
-      psikiater_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Psikiaters",
-      },
     },
   },
 

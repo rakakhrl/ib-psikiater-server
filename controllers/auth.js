@@ -3,6 +3,7 @@ const PsikiaterModel = require("../models/psikiaters");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY;
+const { PATIENT, PSIKIATER } = require("../constants/role");
 
 class AuthController {
   static registerPatient = async (req, res, next) => {
@@ -39,7 +40,7 @@ class AuthController {
 
       const tokenPayload = {
         user_id: patient._id,
-        role: "patient",
+        role: PATIENT,
       };
 
       const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
@@ -48,6 +49,7 @@ class AuthController {
         status: "Success",
         message: "Success create patient data.",
         data: patient,
+        role: PATIENT,
         token: jwtToken,
       });
     } catch (error) {
@@ -67,8 +69,6 @@ class AuthController {
         gender,
         experience_year,
         region,
-        work_days,
-        work_time,
       } = req.body;
 
       const psikiaterData = {
@@ -83,16 +83,12 @@ class AuthController {
           experience_year: experience_year,
           region: region,
         },
-        schedule: {
-          work_days: work_days,
-          work_time: work_time,
-        },
       };
       const psikiater = await PsikiaterModel.create(psikiaterData);
 
       const tokenPayload = {
         user_id: psikiater._id,
-        role: "psikiater",
+        role: PSIKIATER,
       };
 
       const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
@@ -100,6 +96,7 @@ class AuthController {
       res.status(201).json({
         status: "created",
         message: "Success create psikiater data.",
+        role: PSIKIATER,
         data: psikiater,
         token: jwtToken,
       });

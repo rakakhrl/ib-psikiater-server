@@ -51,20 +51,6 @@ const patientSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    diagnose: {
-      diagnose_name: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Appointments",
-      },
-      diagnose_date: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Appointments",
-      },
-      psikiater_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Psikiaters",
-      },
-    },
   },
   {
     versionKey: false,

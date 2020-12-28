@@ -13,7 +13,7 @@ Router.get(
 Router.use(authorization(PATIENT));
 
 Router.post(
-  "/:id",
+  "upload/:id",
   upload.single("profile_photo"),
   PatientController.uploadAvatar
 );
