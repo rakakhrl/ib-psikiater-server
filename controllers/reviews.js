@@ -1,12 +1,36 @@
 "use strict";
-const reviewModel = require("../models/reviews");
+const ReviewModel = require("../models/reviews");
 
 class ReviewController {
-  static getReviewData = async (req, res, next) => {
+  static getReviewDataByIdPsikiater = async (req, res, next) => {
     try {
-      const reviewData = await reviewModel.find();
+      const { id } = req.params;
+
+      const reviewData = await ReviewModel.find({ psikiater_id: id })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
       res.status(200).json({
-        reviewData: reviewData,
+        status: "Success.",
+        message: "Successfully get review data.",
+        data: reviewData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static getReviewDataByIdPatient = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const reviewData = await ReviewModel.find({ patient_id: id })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
+      res.status(200).json({
+        status: "Success.",
+        message: "Successfully get review data.",
+        data: reviewData,
       });
     } catch (error) {
       next(error);
@@ -29,10 +53,15 @@ class ReviewController {
         rating: rating,
         feedback: feedback,
       };
-      const review = await reviewModel.create(reviewData);
-      res.status(200).json({
+      const review = await ReviewModel.create(reviewData)
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
+
+      res.status(201).json({
+        status: "Success.",
         message: "Success add review.",
-        review: review,
+        data: review,
       });
     } catch (error) {
       next(error);
