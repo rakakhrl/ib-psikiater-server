@@ -5,6 +5,6 @@ const { PSIKIATER } = require("../constants/role");
 
 Router.use(authorization(PSIKIATER));
 
-Router.post("/", controller.createPrescription);
+Router.post("/:id", controller.createPrescription);
 
 module.exports = Router;
