@@ -15,9 +15,6 @@ class AuthController {
       date_of_birth,
       gender,
       address,
-      diagnose_name,
-      diagnose_date,
-      psikiater_id,
     } = req.body;
 
     try {
@@ -29,11 +26,6 @@ class AuthController {
         date_of_birth: date_of_birth,
         gender: gender,
         address: address,
-        diagnose: {
-          diagnose_name: diagnose_name,
-          diagnose_date: diagnose_date,
-          psikiater_id: psikiater_id,
-        },
       };
 
       const patient = await PatientsModel.create(patientData);

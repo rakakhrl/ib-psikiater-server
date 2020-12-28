@@ -9,13 +9,12 @@ const patientSchema = new mongoose.Schema(
     first_name: {
       type: String,
       required: true,
-      minlength: 5,
-      maxlength: 10,
+      maxlength: 30,
     },
     last_name: {
       type: String,
       required: true,
-      minlength: 3,
+
       maxlength: 10,
     },
     password: {

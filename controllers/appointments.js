@@ -40,29 +40,24 @@ class AppointmentController {
       const {
         psikiater_id,
         patient_id,
-        prescription_id,
         appointment_date,
         appointment_time,
         complaint,
-        status,
         allergy,
         diagnose_name,
         diagnose_date,
-        psikiater_id,
       } = req.body;
+
       const appointmentData = {
         psikiater_id: psikiater_id,
         patient_id: patient_id,
-        prescription_id: prescription_id,
         appointment_date: appointment_date,
         appointment_time: appointment_time,
         complaint: complaint,
-        status: status,
         allergy: allergy,
         diagnose: {
           diagnose_name: diagnose_name,
           diagnose_date: diagnose_date,
-          psikiater_id: psikiater_id,
         },
       };
       const appointment = await AppointmentModel.create(appointmentData);
@@ -89,6 +84,25 @@ class AppointmentController {
         status: "Success",
         message: "Success get appointment data.",
         data: AppointmentData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static updateDiagnoseByidPatient = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { diagnose_name } = req.body;
+      const patientData = await PatientModel.findOneAndUpdate(
+        { patient_id: id },
+        { diagnose_name: diagnose_name },
+        { new: true }
+      );
+      res.status(200).json({
+        status: "success",
+        message: "Successfully update diagnose data.",
+        data: patientData,
       });
     } catch (error) {
       next(error);

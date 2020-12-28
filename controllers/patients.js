@@ -1,5 +1,6 @@
 "use strict";
 const PatientModel = require("../models/patients");
+const PORT = process.env.PORT;
 
 class PatientController {
   static getPatientDataByIdPatient = async (req, res, next) => {
@@ -11,77 +12,6 @@ class PatientController {
         throw new Error("Data patient not found.");
       }
 
-      res.status(200).json({
-        status: "success",
-        message: "Successfully get patients data by id patient.",
-        data: patientData,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static updatePatientData = async (req, res, next) => {
-    try {
-      const {
-        first_name,
-        last_name,
-        email,
-        password,
-        date_of_birth,
-        gender,
-        address,
-        diagnose_name,
-        diagnose_date,
-        psikiater_id,
-      } = req.body;
-
-      const { id } = req.params;
-
-      const patientData = await PatientModel.findByIdAndUpdate(
-        id,
-        {
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          password: bcrypt.hashSync(password, 10),
-          date_of_birth: date_of_birth,
-          gender: gender,
-          address: address,
-          diagnose: {
-            diagnose_name: diagnose_name,
-            diagnose_date: diagnose_date,
-            psikiater_id: psikiater_id,
-          },
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      if (!patientData) {
-        throw new Error("Unable to update data");
-      }
-
-      res.status(200).json({
-        status: "Success",
-        message: "Data was updated",
-        data: patientData,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static updateDiagnoseByidPatient = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { diagnose_name } = req.body;
-      const patientData = await PatientModel.findByIdAndUpdate(
-        id,
-        { diagnose_name: diagnose_name },
-        { new: true }
-      );
       res.status(200).json({
         status: "success",
         message: "Successfully get patients data by id patient.",

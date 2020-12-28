@@ -4,12 +4,6 @@ const upload = require("../middlewares/multer");
 const authorization = require("../middlewares/authorization");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
-Router.get(
-  "/:id",
-  authorization(PSIKIATER),
-  PatientController.updateDiagnoseByidPatient
-);
-
 Router.use(authorization(PATIENT));
 
 Router.post(
@@ -19,7 +13,5 @@ Router.post(
 );
 
 Router.get("/:id", PatientController.getPatientDataByIdPatient);
-
-Router.post("/:id", PatientController.updatePatientData);
 
 module.exports = Router;

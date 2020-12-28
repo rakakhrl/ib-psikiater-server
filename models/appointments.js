@@ -13,12 +13,13 @@ const appointmentSchema = new mongoose.Schema(
     prescription_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Prescriptions",
+      default: "",
     },
-    appoinment_date: {
+    appointment_date: {
       type: Date,
       required: true,
     },
-    appoinment_time: {
+    appointment_time: {
       type: String,
       required: true,
     },
@@ -30,7 +31,7 @@ const appointmentSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      default: "",
+      default: "Unpaid",
     },
     allergy: [String],
     diagnose: {

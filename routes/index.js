@@ -5,6 +5,7 @@ const psikiaterRouter = require("./psikiater");
 const authRoutes = require("./auth");
 const scheduleRouter = require("./schedules");
 const prescriptionRouter = require("./prescriptions");
+const appointmentRouter = require("./appoinments");
 const path = require("path");
 
 const authentication = require("../middlewares/authentication");
@@ -12,6 +13,8 @@ const authentication = require("../middlewares/authentication");
 Router.use("/auth", authRoutes);
 
 Router.use(authentication);
+
+Router.use("/appointments", appointmentRouter);
 
 Router.use("/reviews", reviewRouter);
 

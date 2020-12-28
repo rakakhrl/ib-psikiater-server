@@ -10,11 +10,20 @@ Router.post(
   AppointmentController.createAppointment
 );
 
-Router.get("/:id", AppointmentController.getAppointmentDataByPatientId);
+Router.patch(
+  "/update/:id",
+  authorization(PSIKIATER),
+  AppointmentController.updateDiagnoseByidPatient
+);
 
-Router.get("/:id", AppointmentController.getAppointmentDataByPsikiaterId);
+Router.get("/patient/:id", AppointmentController.getAppointmentDataByPatientId);
 
 Router.get(
+  "/psikiater/:id",
+  AppointmentController.getAppointmentDataByPsikiaterId
+);
+
+Router.patch(
   "/:id",
   authorization(PSIKIATER),
   AppointmentController.updateStatusAppointmentByIdPatient
