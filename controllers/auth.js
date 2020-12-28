@@ -56,6 +56,7 @@ class AuthController {
           status: "success",
           message: "Login successfull.",
           role: PATIENT,
+          data: patient,
           token: jwt.sign(
             { user_id: patient._id, role: PATIENT },
             process.env.SECRET_KEY
@@ -68,6 +69,7 @@ class AuthController {
           status: "success",
           message: "Login successfull.",
           role: PSIKIATER,
+          data: psikiater,
           token: jwt.sign(
             { user_id: psikiater._id, role: PSIKIATER },
             process.env.SECRET_KEY
