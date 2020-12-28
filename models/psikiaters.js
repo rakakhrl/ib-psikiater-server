@@ -9,15 +9,10 @@ const psikiatertSchema = new mongoose.Schema(
     first_name: {
       type: String,
       required: "First Name Is Required",
-      minlength: 3,
-      maxlength: 10,
       set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
     },
     last_name: {
       type: String,
-      required: "Last Name Is Required",
-      minlength: 3,
-      maxlength: 10,
       set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
     },
     password: {
