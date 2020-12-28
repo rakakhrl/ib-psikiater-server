@@ -2,6 +2,7 @@ const PatientsModel = require("../models/patients");
 const PsikiaterModel = require("../models/psikiaters");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { PATIENT, PSIKIATER } = require("../constants/role");
 
 class AuthController {
   static registerPatient = async (req, res, next) => {
@@ -54,9 +55,9 @@ class AuthController {
         res.status(200).json({
           status: "success",
           message: "Login successfull.",
-          role: "patient",
+          role: PATIENT,
           token: jwt.sign(
-            { user_id: patient._id, role: "patient" },
+            { user_id: patient._id, role: PATIENT },
             process.env.SECRET_KEY
           ),
         });
@@ -66,9 +67,9 @@ class AuthController {
         res.status(200).json({
           status: "success",
           message: "Login successfull.",
-          role: "psikiater",
+          role: PSIKIATER,
           token: jwt.sign(
-            { user_id: psikiater._id, role: "psikiater" },
+            { user_id: psikiater._id, role: PSIKIATER },
             process.env.SECRET_KEY
           ),
         });
