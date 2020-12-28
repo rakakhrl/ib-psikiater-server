@@ -93,10 +93,10 @@ class AppointmentController {
   static updateDiagnoseByidPatient = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { diagnose_name } = req.body;
+      const { diagnose_name, diagnose_date } = req.body;
       const patientData = await PatientModel.findOneAndUpdate(
         { patient_id: id },
-        { diagnose_name: diagnose_name },
+        { diagnose_name: diagnose_name, diagnose_date: diagnose_date },
         { new: true }
       );
       res.status(200).json({
