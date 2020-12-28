@@ -5,7 +5,6 @@ const prescriptionSchema = new Schema({
   drugs: {
     drug_name: {
       type: String,
-      maxlength: 20,
       set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
     },
     consume_method: {
