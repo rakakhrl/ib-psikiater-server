@@ -9,27 +9,16 @@ const psikiatertSchema = new mongoose.Schema(
     first_name: {
       type: String,
       required: "First Name Is Required",
-      unique: true,
       minlength: 3,
       maxlength: 10,
-      validate: {
-        validator: (v) => {
-          return /^[A-Z]/.test(v);
-        },
-        message: "First Letter Must Capital",
-      },
+      set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
     },
     last_name: {
       type: String,
       required: "Last Name Is Required",
-      unique: true,
       minlength: 3,
       maxlength: 10,
-      validate: {
-        validator: (v) => {
-          return /^[A-Z]/.test(v);
-        },
-      },
+      set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
     },
     password: {
       type: String,
@@ -72,12 +61,7 @@ const psikiatertSchema = new mongoose.Schema(
         type: String,
         required: true,
         maxlength: 10,
-        validate: {
-          validator: (v) => {
-            return /^[A-Z]/.test(v);
-          },
-          message: "First Letter Must Capital",
-        },
+        set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
       },
     },
     schedule: {
@@ -97,7 +81,11 @@ const psikiatertSchema = new mongoose.Schema(
   }
 );
 
-//virtual rating
+// psikiatertSchema.pre("save", function (next) {
+//   // capitalize
+//   (v) => this.info.region.charAt(0).toUpperCase(v);
+//   next();
+// });
 
 const Psikiaters = mongoose.model("Psikiaters", psikiatertSchema);
 module.exports = Psikiaters;
