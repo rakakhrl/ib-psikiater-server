@@ -1,8 +1,10 @@
 "use strict";
 
 const jwt = require("jsonwebtoken");
+const { PATIENT, PSIKIATER } = require("../constants/role");
 const SECRET_KEY = process.env.SECRET_KEY;
-const patientsModel = require("../models/psikiater");
+const PatientsModel = require("../models/patients");
+const PsikiatersModel = require("../models/psikiaters");
 
 const authentication = async (req, res, next) => {
   try {
@@ -10,12 +12,31 @@ const authentication = async (req, res, next) => {
     if (!accesstoken) {
       throw new Error("invalid token");
     }
-    const payload = jwt.verify(accesstoken, SECRET_KEY);
+    const { user_id, role } = jwt.verify(accesstoken, SECRET_KEY);
 
-    const user = await patientsModel.findById(payload.userID);
+    if (role !== PATIENT || role !== PSIKIATER) {
+      throw new Error("JWT Malformed");
+    }
 
-    req.patient = {
-      userID: user._id,
+    if (role === PATIENT) {
+      const patient = await PatientsModel.findById(user_id);
+
+      if (!patient) {
+        throw new Error("JWT Malformed");
+      }
+    }
+
+    if (role === PSIKIATER) {
+      const psikiater = await PsikiatersModel.findById(user_id);
+
+      if (!psikiater) {
+        throw new Error("JWT Malformed");
+      }
+    }
+
+    req.user = {
+      user_id,
+      role,
     };
 
     next();

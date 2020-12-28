@@ -2,9 +2,11 @@
 const ReviewModel = require("../models/reviews");
 
 class ReviewController {
-  static getReviewData = async (req, res, next) => {
+  static getReviewDataByIdPsikiater = async (req, res, next) => {
     try {
-      const reviewData = await ReviewModel.find();
+      const { id } = req.params;
+
+      const reviewData = await ReviewModel.find({ psikiater_id: id });
       res.status(200).json({
         status: "Success.",
         message: "Successfully get review data.",
@@ -18,7 +20,7 @@ class ReviewController {
   static getReviewDataByIdPatient = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const reviewData = await ReviewModel.findById(id);
+      const reviewData = await ReviewModel.find({ patient_id: id });
       res.status(200).json({
         status: "Success.",
         message: "Successfully get review data.",

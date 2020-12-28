@@ -4,18 +4,18 @@ const reviewSchema = new mongoose.Schema(
   {
     psikiater_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "psikiater_id",
+      ref: "Psikiaters",
     },
     patient_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "patient_id",
+      ref: "Patients",
     },
     appointment_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "patient_id",
+      ref: "Appointments",
     },
     rating: {
-      type: String,
+      type: mongoose.Schema.Types.Decimal128,
       required: true,
     },
     feedback: {

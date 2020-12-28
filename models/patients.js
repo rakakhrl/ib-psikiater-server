@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema(
   {
+    is_active: {
+      type: Boolean,
+      default: true,
+    },
     first_name: {
       type: String,
       required: true,
@@ -17,8 +21,6 @@ const patientSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      unique: true,
-      minlength: 3,
     },
     email: {
       type: String,
@@ -51,15 +53,15 @@ const patientSchema = new mongoose.Schema(
     },
     diagnose: {
       diagnose_name: {
-        type: String,
-        default: "",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Appointments",
       },
       diagnose_date: {
-        type: Date,
-        default: "",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Appointments",
       },
       psikiater_id: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Psikiaters",
       },
     },

@@ -25,13 +25,30 @@ const appointmentSchema = new mongoose.Schema(
     complaint: {
       type: String,
       required: true,
+      default: "",
     },
     status: {
       type: String,
       required: true,
       default: "",
     },
+    allergy: [String],
+    diagnose: {
+      diagnose_name: {
+        type: String,
+        default: "",
+      },
+      diagnose_date: {
+        type: Date,
+        default: "",
+      },
+      psikiater_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Psikiaters",
+      },
+    },
   },
+
   {
     versionKey: false,
     timestamps: true,
