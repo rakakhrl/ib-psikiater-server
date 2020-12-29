@@ -82,10 +82,9 @@ class PsikiaterController {
 
   static getPsikiaterDataByRegion = async (req, res, next) => {
     try {
+      const { region } = req.params;
       const psikiaterData = await PsikiaterModel.find({
-        info: {
-          region: req.params.region,
-        },
+        "info.region": region,
       });
 
       if (!psikiaterData) {
