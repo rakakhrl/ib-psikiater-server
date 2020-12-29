@@ -137,6 +137,23 @@ class AuthController {
       next(error);
     }
   };
+
+  static userIdentifier = async (req, res, next) => {
+    try {
+      const { user_id, role } = req.user;
+
+      res.status(200).json({
+        status: "success",
+        message: "Get user identifier successfully",
+        data: {
+          user_id,
+          role,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = AuthController;
