@@ -672,9 +672,6 @@ gaada appointment id pada dokumentasi postman
     }
     }
 
-**BUTUH PENCERAHAN**,
-accesstoken => itu punyanya patient/psikiater atau bisa diakses oleh dua-duanya?
-
 #### GET Appointment By Id Patient
 
 <br>
@@ -685,7 +682,7 @@ accesstoken => itu punyanya patient/psikiater atau bisa diakses oleh dua-duanya?
 
 <br>
 
-    accesstoken : Psikiater Access Token
+    accesstoken : Patient Access Token
 
 ###### Request Example
 
@@ -732,9 +729,6 @@ accesstoken => itu punyanya patient/psikiater atau bisa diakses oleh dua-duanya?
     }
     }
 
-**BUTUH PENCERAHAN**,
-accesstoken => itu punyanya patient/psikiater atau bisa diakses oleh dua-duanya?
-
 #### GET Appointment By Id Psikiater
 
 <br>
@@ -745,7 +739,7 @@ accesstoken => itu punyanya patient/psikiater atau bisa diakses oleh dua-duanya?
 
 <br>
 
-    accesstoken : Patient Access Token
+    accesstoken : Psikiater Access Token
 
 ###### Request Example
 
@@ -867,9 +861,6 @@ accesstoken => itu punyanya patient/psikiater atau bisa diakses oleh dua-duanya?
     }
     }
 
-**BUTUH PENCERAHAN**,
-accesstoken => Siapa yang boleh update status pembayaran?
-
 #### PATCH Update Status
 
 <br>
@@ -880,7 +871,7 @@ accesstoken => Siapa yang boleh update status pembayaran?
 
 <br>
 
-    accesstoken : Psikiater Access Token
+    accesstoken : Psikiater/Patient Access Token
 
 ###### BODY raw
 
