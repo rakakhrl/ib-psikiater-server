@@ -142,7 +142,7 @@ class AuthController {
     try {
       const { user_id, role } = req.user;
 
-      res.send(200).json({
+      res.status(200).json({
         status: "success",
         message: "Get user identifier successfully",
         data: {
