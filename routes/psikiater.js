@@ -10,6 +10,8 @@ Router.get(
   psikiaterController.getPsikiaterDataByRegion
 );
 
+Router.get("/:id", psikiaterController.getPsikiaterDataById);
+
 Router.use(authorization(PSIKIATER));
 
 Router.patch("/:id", psikiaterController.updatePsikiaterData);

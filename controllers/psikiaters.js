@@ -100,5 +100,23 @@ class PsikiaterController {
       next(error);
     }
   };
+  static getPsikiaterDataById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const psikiaterData = await PsikiaterModel.findById(id);
+
+      if (!psikiaterData) {
+        throw new Error("Psikiater Not Found");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Get Psikiater Data",
+        data: psikiaterData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 module.exports = PsikiaterController;
