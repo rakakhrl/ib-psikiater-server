@@ -2,30 +2,30 @@
 
 #
 
-## 1. Psikiater :
+## 1. Psikiater
 
 <br>
 
-#### POST Upload Avatar Psikiater :
+#### POST Upload Avatar Psikiater
 
 <br>
 
     url : {{baseUrl}}/psikiater/upload/:Psikiater_Id
     method : POST
 
-###### HEADERS :
+#### HEADERS
 
 <br>
 
     accesstoken : Psikiater Access Token
 
-###### BODY form-data :
+#### BODY form-data
 
 <br>
 
     profile_photo , type = file
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -49,7 +49,7 @@
 
 <br>
 
-###### Example Response :
+#### Example Response
 
 <br>
 
@@ -85,20 +85,20 @@
     }
     }
 
-#### PATCH Update Work Schedule Psikiater :
+#### PATCH Update Work Schedule Psikiater
 
 <br>
 
     url : {{baseUrl}}/schedule/:psikiater_id
     method : PATCH
 
-###### HEADERS :
+#### HEADERS
 
 <br>
 
     accesstoken : Psikiater Access Token
 
-###### BODY raw :
+#### BODY raw
 
 <br>
 
@@ -108,7 +108,7 @@
 
 }
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -134,7 +134,7 @@
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -170,23 +170,93 @@
     }
     }
 
-## 2. Prescription :
+#### Get Psikiater By Region
 
 <br>
 
-#### POST Create Prescription :
+    {{baseUrl}}/psikiater/:psikiater_region
+
+#### HEADERS
+
+<br>
+
+    accesstoken : Patient Access Token
+
+#### Request Example
+
+<br>
+
+    request - GET {{baseUrl}}/psikiater/Jupiter
+
+    header - accesstoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWZlOTg0ZjIxYWI1NWU0YjI4M2M0ZDM0Iiwicm9sZSI6IlBBVElFTlQiLCJpYXQiOjE2MDkyMzUzNTl9.Vu0ISz8_jNhw-mP3rfd1yAJPEIHfamRJWHOqVGN7O_w
+
+#### Table Info
+
+<br>
+
+| Name        | Descriptions              | Type | Notes                              |
+| ----------- | ------------------------- | ---- | ---------------------------------- |
+| request     | To accessing our endpoint | GET  | Get Psikiater Data By Their Region |
+| accesstoken | Patient Access Token      | JWT  |                                    |
+
+#
+
+#### Response Example
+
+<br>
+
+    {
+
+    "status": "Success",
+    "message": "Success get psikiater data",
+    "data": [
+        {
+        "info": {
+            "experience_year": "100+ year",
+            "region": "Jupiter"
+        },
+        "schedule": {
+            "work_days": [
+            "Senin",
+            "Jumat"
+            ],
+            "work_time": [
+            "09:00 - 12:00",
+            "13:00 - 16:00"
+            ]
+        },
+        "is_active": true,
+        "avatar_url": "http://localhost:3030/media/1608887669904-5fe5a1efdf84fa2ae85c7861-0.jpg",
+        "_id": "5fe5a1efdf84fa2ae85c7861",
+        "first_name": "Psikiater",
+        "last_name": "Handal",
+        "password": "$2b$10$PRx0VgUKDWZoduM9uT7BvuvyI3vHKMIdO51sFNDvegcKOPl5TF1hW",
+        "email": "saya_handal@gmail.com",
+        "date_of_birth": "1885-12-25T00:00:00.000Z",
+        "gender": "Alien",
+        "createdAt": "2020-12-25T08:25:19.195Z",
+        "updatedAt": "2020-12-25T09:14:38.035Z"
+        }
+    ]
+    }
+
+## 2. Prescription
+
+<br>
+
+#### POST Create Prescription
 
 <br>
 
     {{baseUrl}}/prescriptions/:appointment_id
 
-###### HEADERS :
+#### HEADERS
 
 <br>
 
     accesstoken : Psikiater Access Token
 
-###### BODY raw :
+#### BODY raw
 
 <br>
 
@@ -196,7 +266,7 @@
     "time_sequence": "Sebelum Makan"
     }
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -226,7 +296,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -252,13 +322,13 @@ gaada appointment id pada dokumentasi postman
 
 <br>
 
-#### POST Register Psikiater :
+#### POST Register Psikiater
 
 <br>
 
     {{baseUrl}}/auth/register-psikiater
 
-###### BODY raw :
+#### BODY raw
 
 <br>
 
@@ -273,7 +343,7 @@ gaada appointment id pada dokumentasi postman
     "region": "Jupiter"
     }
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -308,7 +378,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -338,13 +408,13 @@ gaada appointment id pada dokumentasi postman
     }
     }
 
-#### POST Resister Patient :
+#### POST Resister Patient
 
 <br>
 
     {{baseUrl}}/auth/register-patient
 
-###### BODY raw :
+#### BODY raw
 
 <br>
 
@@ -358,7 +428,7 @@ gaada appointment id pada dokumentasi postman
       "address": "Bekasi"
     }
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -391,7 +461,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -420,7 +490,7 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/auth/login
 
-###### BODY raw :
+#### BODY raw
 
 <br>
 
@@ -429,7 +499,7 @@ gaada appointment id pada dokumentasi postman
     "password": "123456"
     }
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -452,7 +522,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -473,13 +543,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/patients/:patient_id
 
-###### HEADERS :
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### Request Example :
+#### Request Example
 
 <br>
 
@@ -496,7 +566,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example :
 
     {
 
@@ -524,19 +594,19 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/patients/upload/:patient_id
 
-###### HEADERS :
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### BODY form-data :
+#### BODY form-data
 
 <br>
 
     profile_photo, type : File
 
-###### Request Example :
+###### Request Example
 
 <br>
 
@@ -558,7 +628,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -591,13 +661,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/appointments
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### BODY raw
+#### BODY raw
 
 <br>
 
@@ -610,7 +680,7 @@ gaada appointment id pada dokumentasi postman
         "allergy": ["OBH Combi", "Paracetamol"]
       }
 
-###### Request Example
+#### Request Example
 
 <br>
 
@@ -644,7 +714,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example :
+#### Response Example
 
 <br>
 
@@ -678,13 +748,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/appointments/patient/:patient_id
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### Request Example
+#### Request Example
 
 <br>
 
@@ -703,7 +773,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
     {
     "status": "Success",
@@ -735,13 +805,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/appointments/psikiater/:psikiater_id
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Psikiater Access Token
 
-###### Request Example
+#### Request Example
 
 <br>
 
@@ -760,7 +830,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
     {
     "status": "Success",
@@ -792,13 +862,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/appointments/diagnose/:patient_id
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Psikiater Access Token
 
-###### BODY raw
+#### BODY raw
 
 <br>
 
@@ -807,7 +877,7 @@ gaada appointment id pada dokumentasi postman
     "diagnose_date": "2020/12/28"
     }
 
-###### Request Example
+#### Request Example
 
 <br>
 
@@ -833,7 +903,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
 <br>
 
@@ -867,13 +937,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/appointments/status/:patient_id
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Psikiater/Patient Access Token
 
-###### BODY raw
+#### BODY raw
 
 <br>
 
@@ -881,7 +951,7 @@ gaada appointment id pada dokumentasi postman
         "status": "Paid"
     }
 
-###### Request Example
+#### Request Example
 
     request - PATCH {{baseUrl}}/appointments/status/5fe98b2c9994c03ce4b809dd
 
@@ -903,7 +973,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
 <br>
 
@@ -921,13 +991,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/reviews
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### BODY raw
+#### BODY raw
 
 <br>
 
@@ -939,7 +1009,7 @@ gaada appointment id pada dokumentasi postman
         "feedback": "Psikiaternya baik"
     }
 
-###### Request Example
+#### Request Example
 
 <br>
 
@@ -971,7 +1041,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
 <br>
 
@@ -998,13 +1068,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/reviews/psikiater/:psikiater_id
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### Request Example
+#### Request Example
 
 <br>
 
@@ -1023,7 +1093,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
 <br>
 
@@ -1052,13 +1122,13 @@ gaada appointment id pada dokumentasi postman
 
     {{baseUrl}}/reviews/patient/:patient_id
 
-###### HEADERS
+#### HEADERS
 
 <br>
 
     accesstoken : Patient Access Token
 
-###### Requenst Example
+#### Requenst Example
 
 <br>
 
@@ -1077,7 +1147,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
 <br>
 
@@ -1110,13 +1180,13 @@ gaada appointment id pada dokumentasi postman
 
     http://localhost:3030/media/:photo_url_that_we_upload
 
-###### HEADERS :
+#### HEADERS :
 
 <br>
 
     accesstoken : Psikiater Access Token
 
-###### Request Example :
+#### Request Example :
 
 <br>
 
@@ -1135,7 +1205,7 @@ gaada appointment id pada dokumentasi postman
 
 #
 
-###### Response Example
+#### Response Example
 
 <br>
 
