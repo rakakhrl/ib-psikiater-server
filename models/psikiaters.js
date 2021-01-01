@@ -68,6 +68,10 @@ const psikiaterSchema = new mongoose.Schema(
         default: [],
       },
     },
+    fees: {
+      type: String,
+      default: "",
+    },
   },
   {
     versionKey: false,
