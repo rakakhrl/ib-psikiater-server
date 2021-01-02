@@ -15,6 +15,7 @@ class PsikiaterController {
         region,
         work_address,
         gender,
+        fees,
       } = req.body;
 
       const psikiaterData = await PsikiaterModel.findByIdAndUpdate(
@@ -23,8 +24,8 @@ class PsikiaterController {
           status: status,
           first_name: first_name,
           last_name: last_name,
-          email: email,
           password: password,
+          email: email,
           date_of_birth: date_of_birth,
           info: {
             experience_year: experience_year,
@@ -32,6 +33,7 @@ class PsikiaterController {
           },
           work_address: work_address,
           gender: gender,
+          fees: fees,
         },
         {
           new: true,
@@ -94,6 +96,24 @@ class PsikiaterController {
       res.status(200).json({
         status: "Success",
         message: "Success get psikiater data",
+        data: psikiaterData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  static getPsikiaterDataById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const psikiaterData = await PsikiaterModel.findById(id);
+
+      if (!psikiaterData) {
+        throw new Error("Psikiater Not Found");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Get Psikiater Data",
         data: psikiaterData,
       });
     } catch (error) {
