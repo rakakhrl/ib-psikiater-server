@@ -15,11 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, `uploads`)));
 
-app.use(router);
-
 app.use("/media/:filename", (req, res) => {
   res.sendFile(path.join(__dirname, `/uploads/${req.params.filename}`));
 });
+
+app.use(router);
 
 app.use(errorHandler);
 
