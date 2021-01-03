@@ -4,13 +4,13 @@ const upload = require("../middlewares/multer");
 const authorization = require("../middlewares/authorization");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
+Router.get("/:id", psikiaterController.getPsikiaterDataById);
+
 Router.get(
   "/:region",
   authorization(PATIENT),
   psikiaterController.getPsikiaterDataByRegion
 );
-
-Router.get("/:id", psikiaterController.getPsikiaterDataById);
 
 Router.use(authorization(PSIKIATER));
 
