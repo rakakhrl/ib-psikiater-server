@@ -5,8 +5,11 @@ class AppointmentController {
   static getAppointmentDataByPatientId = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const AppointmentData = await AppointmentModel.findOne({
-        patient_id: id,
+      const AppointmentData = await AppointmentModel.find({
+        $and: [
+          { patient_id: id },
+          { $or: [{ status: "Paid" }, { status: "Done" }] },
+        ],
       })
         .populate("psikiater_id")
         .populate("patient_id")
@@ -24,8 +27,11 @@ class AppointmentController {
   static getAppointmentDataByPsikiaterId = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const AppointmentData = await AppointmentModel.findOne({
-        psikiater_id: id,
+      const AppointmentData = await AppointmentModel.find({
+        $and: [
+          { psikiater_id: id },
+          { $or: [{ status: "Paid" }, { status: "Done" }] },
+        ],
       })
         .populate("psikiater_id")
         .populate("patient_id")
