@@ -2,6 +2,24 @@
 const ReviewModel = require("../models/reviews");
 
 class ReviewController {
+  static getOneReviewDataByIdAppointment = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const reviewData = await ReviewModel.findOne({ appointment_id: id })
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("appointment_id");
+      res.status(200).json({
+        status: "Success.",
+        message: "Successfully get review data.",
+        data: reviewData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static getReviewDataByIdPsikiater = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -53,10 +71,7 @@ class ReviewController {
         rating: rating,
         feedback: feedback,
       };
-      const review = await ReviewModel.create(reviewData)
-        .populate("psikiater_id")
-        .populate("patient_id")
-        .populate("appointment_id");
+      const review = await ReviewModel.create(reviewData);
 
       res.status(201).json({
         status: "Success.",
