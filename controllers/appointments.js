@@ -34,6 +34,7 @@ class AppointmentController {
         .populate("psikiater_id")
         .populate("patient_id")
         .populate("prescription_id");
+
       res.status(200).json({
         status: "Success",
         message: "Success get appointment data.",
