@@ -16,10 +16,10 @@ Router.patch(
   AppointmentController.updateDiagnose
 );
 
-Router.get("/patient/:id", AppointmentController.getAppointmentDataByPatientId);
+Router.get("/patient", AppointmentController.getAppointmentDataByPatientId);
 
 Router.get(
-  "/psikiater/",
+  "/psikiater",
   authorization(PSIKIATER),
   AppointmentController.getAppointmentDataByPsikiaterId
 );

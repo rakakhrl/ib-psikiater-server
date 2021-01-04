@@ -4,10 +4,11 @@ const AppointmentModel = require("../models/appointments");
 class AppointmentController {
   static getAppointmentDataByPatientId = async (req, res, next) => {
     try {
-      const { id } = req.params;
+      const { user_id } = req.user;
+
       const AppointmentData = await AppointmentModel.find({
         $and: [
-          { patient_id: id },
+          { patient_id: user_id },
           { $or: [{ status: "Paid" }, { status: "Done" }] },
         ],
       })
@@ -26,8 +27,13 @@ class AppointmentController {
 
   static getAppointmentDataByPsikiaterId = async (req, res, next) => {
     try {
+      const { user_id } = req.user;
+
       const AppointmentData = await AppointmentModel.find({
-        $and: [{ user_id }, { $or: [{ status: "Paid" }, { status: "Done" }] }],
+        $and: [
+          { psikiater_id: user_id },
+          { $or: [{ status: "Paid" }, { status: "Done" }] },
+        ],
       })
         .populate("psikiater_id")
         .populate("patient_id")
