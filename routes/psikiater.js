@@ -7,7 +7,7 @@ const { PATIENT, PSIKIATER } = require("../constants/role");
 Router.get("/:id", psikiaterController.getPsikiaterDataById);
 
 Router.get(
-  "/:region",
+  "/search/:region",
   authorization(PATIENT),
   psikiaterController.getPsikiaterDataByRegion
 );
