@@ -2,15 +2,14 @@ const Router = require("express").Router();
 const psikiaterController = require("../controllers/psikiaters");
 const upload = require("../middlewares/multer");
 const authorization = require("../middlewares/authorization");
+const authentication = require("../middlewares/authentication");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
-Router.get("/:id", psikiaterController.getPsikiaterDataById);
+Router.get("/search/:region", psikiaterController.getPsikiaterDataByRegion);
 
-Router.get(
-  "/:region",
-  authorization(PATIENT),
-  psikiaterController.getPsikiaterDataByRegion
-);
+Router.use(authentication);
+
+Router.get("/:id", psikiaterController.getPsikiaterDataById);
 
 Router.use(authorization(PSIKIATER));
 
