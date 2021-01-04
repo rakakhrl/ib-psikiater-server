@@ -12,6 +12,8 @@ const authentication = require("../middlewares/authentication");
 
 Router.use("/auth", authRoutes);
 
+Router.use("/psikiater", psikiaterRouter);
+
 Router.use(authentication);
 
 Router.use("/appointments", appointmentRouter);
@@ -19,8 +21,6 @@ Router.use("/appointments", appointmentRouter);
 Router.use("/reviews", reviewRouter);
 
 Router.use("/patients", patientRouter);
-
-Router.use("/psikiater", psikiaterRouter);
 
 Router.use("/schedule", scheduleRouter);
 
