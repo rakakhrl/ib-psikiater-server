@@ -19,7 +19,7 @@ Router.patch(
 Router.get("/patient/:id", AppointmentController.getAppointmentDataByPatientId);
 
 Router.get(
-  "/psikiater/:id",
+  "/psikiater/",
   authorization(PSIKIATER),
   AppointmentController.getAppointmentDataByPsikiaterId
 );

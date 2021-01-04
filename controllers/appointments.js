@@ -26,12 +26,8 @@ class AppointmentController {
 
   static getAppointmentDataByPsikiaterId = async (req, res, next) => {
     try {
-      const { id } = req.params;
       const AppointmentData = await AppointmentModel.find({
-        $and: [
-          { psikiater_id: id },
-          { $or: [{ status: "Paid" }, { status: "Done" }] },
-        ],
+        $and: [{ user_id }, { $or: [{ status: "Paid" }, { status: "Done" }] }],
       })
         .populate("psikiater_id")
         .populate("patient_id")
