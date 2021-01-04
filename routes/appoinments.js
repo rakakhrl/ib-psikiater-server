@@ -4,7 +4,10 @@ const AppointmentController = require("../controllers/appointments");
 const authorization = require("../middlewares/authorization");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
-Router.get("/:id", AppointmentController.getOneAppointmentDataByAppointmentId);
+Router.get(
+  "/:appointment_id",
+  AppointmentController.getOneAppointmentDataByAppointmentId
+);
 
 Router.post(
   "/",
