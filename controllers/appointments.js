@@ -2,6 +2,25 @@
 const AppointmentModel = require("../models/appointments");
 
 class AppointmentController {
+  static getOneAppointmentDataByAppointmentId = async (req, res, next) => {
+    try {
+      const { appointment_id } = req.params;
+
+      const AppointmentData = await AppointmentModel.findById(appointment_id)
+        .populate("psikiater_id")
+        .populate("patient_id")
+        .populate("prescription_id");
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success get appointment data.",
+        data: AppointmentData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static getAppointmentDataByPatientId = async (req, res, next) => {
     try {
       const { user_id } = req.user;
