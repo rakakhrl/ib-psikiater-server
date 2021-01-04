@@ -4,6 +4,14 @@ const AppointmentController = require("../controllers/appointments");
 const authorization = require("../middlewares/authorization");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
+Router.get("/patient", AppointmentController.getAppointmentDataByPatientId);
+
+Router.get(
+  "/psikiater",
+  authorization(PSIKIATER),
+  AppointmentController.getAppointmentDataByPsikiaterId
+);
+
 Router.get(
   "/:appointment_id",
   AppointmentController.getOneAppointmentDataByAppointmentId
@@ -19,14 +27,6 @@ Router.patch(
   "/diagnose/:id",
   authorization(PSIKIATER),
   AppointmentController.updateDiagnose
-);
-
-Router.get("/patient", AppointmentController.getAppointmentDataByPatientId);
-
-Router.get(
-  "/psikiater",
-  authorization(PSIKIATER),
-  AppointmentController.getAppointmentDataByPsikiaterId
 );
 
 Router.patch(
