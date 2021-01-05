@@ -17,6 +17,11 @@ Router.get(
   AppointmentController.getOneAppointmentDataByAppointmentId
 );
 
+Router.patch(
+  "/status/:id",
+  AppointmentController.updateStatusAppointmentByIdPatient
+);
+
 Router.post(
   "/",
   authorization(PATIENT),
@@ -27,12 +32,6 @@ Router.patch(
   "/diagnose/:id",
   authorization(PSIKIATER),
   AppointmentController.updateDiagnose
-);
-
-Router.patch(
-  "/status/:id",
-  authorization(PSIKIATER),
-  AppointmentController.updateStatusAppointmentByIdPatient
 );
 
 module.exports = Router;
