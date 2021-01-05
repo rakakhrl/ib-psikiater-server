@@ -93,20 +93,13 @@ class AppointmentController {
           diagnose_date: diagnose_date,
         },
       };
-      const appointment = await AppointmentModel.create(appointmentData)
-        .populate("psikiater_id")
-        .populate("patient_id")
-        .populate("prescription_id");
-      res
-        .status(201)
-        .json({
-          status: "Success.",
-          message: "Success create appointment.",
-          data: appointment,
-        })
-        .populate("psikiater_id")
-        .populate("patient_id")
-        .populate("prescription_id");
+      const appointment = await AppointmentModel.create(appointmentData);
+
+      res.status(201).json({
+        status: "Success.",
+        message: "Success create appointment.",
+        data: appointment,
+      });
     } catch (error) {
       next(error);
     }

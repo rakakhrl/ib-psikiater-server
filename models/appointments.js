@@ -13,7 +13,6 @@ const appointmentSchema = new mongoose.Schema(
     prescription_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Prescriptions",
-      default: "",
     },
     appointment_date: {
       type: Date,
