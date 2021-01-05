@@ -49,7 +49,7 @@ class AppointmentController {
     try {
       const { user_id } = req.user;
 
-      const AppointmentData = await AppointmentModel.find({
+      const appointment = await AppointmentModel.find({
         $and: [
           { psikiater_id: user_id },
           { $or: [{ status: "Paid" }, { status: "Done" }] },
@@ -61,7 +61,7 @@ class AppointmentController {
       res.status(200).json({
         status: "Success",
         message: "Success get appointment data.",
-        data: AppointmentData,
+        data: appointment,
       });
     } catch (error) {
       next(error);
