@@ -1,5 +1,6 @@
 const PsikiaterModel = require("../models/psikiaters");
 const PORT = process.env.PORT;
+const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
 
 class PsikiaterController {
   static updatePsikiaterData = async (req, res, next) => {
@@ -61,7 +62,7 @@ class PsikiaterController {
       const uploadAvatar = await PsikiaterModel.findByIdAndUpdate(
         req.params.id,
         {
-          avatar_url: `http://localhost:${PORT}/media/${filename}`,
+          avatar_url: `http://${SERVER_IP_ADDRESS}:${PORT}/media/${filename}`,
         },
         {
           new: true,
