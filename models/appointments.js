@@ -5,10 +5,12 @@ const appointmentSchema = new mongoose.Schema(
     psikiater_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Psikiaters",
+      required: true,
     },
     patient_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patients",
+      required: true,
     },
     prescription_id: {
       type: mongoose.Schema.Types.ObjectId,
