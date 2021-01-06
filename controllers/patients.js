@@ -1,6 +1,7 @@
 "use strict";
 const PatientModel = require("../models/patients");
 const PORT = process.env.PORT;
+const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
 
 class PatientController {
   static getPatientDataByIdPatient = async (req, res, next) => {
@@ -29,7 +30,7 @@ class PatientController {
       const uploadAvatar = await PatientModel.findByIdAndUpdate(
         req.params.id,
         {
-          avatar_url: `http://localhost:${PORT}/media/${filename}`,
+          avatar_url: `http://${SERVER_IP_ADDRESS}:${PORT}/media/${filename}`,
         },
         {
           new: true,
