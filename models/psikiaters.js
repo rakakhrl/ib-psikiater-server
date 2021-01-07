@@ -37,6 +37,10 @@ const psikiaterSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    work_address: {
+      type: String,
+      required: true,
+    },
     gender: {
       type: String,
       required: true,
