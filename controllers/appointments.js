@@ -133,7 +133,12 @@ class AppointmentController {
       const { diagnose_name, diagnose_date } = req.body;
       const AppointmentData = await AppointmentModel.findByIdAndUpdate(
         id,
-        { diagnose_name: diagnose_name, diagnose_date: diagnose_date },
+        {
+          diagnose: {
+            diagnose_name: diagnose_name,
+            diagnose_date: diagnose_date,
+          },
+        },
         { new: true }
       )
         .populate("psikiater_id")
