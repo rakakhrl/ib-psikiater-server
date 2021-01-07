@@ -15,7 +15,6 @@ class PsikiaterController {
         work_address,
         experience_year,
         region,
-        work_address,
         gender,
         fees,
       } = req.body;
