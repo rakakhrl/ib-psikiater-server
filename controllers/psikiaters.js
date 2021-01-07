@@ -12,9 +12,9 @@ class PsikiaterController {
         email,
         password,
         date_of_birth,
+        work_address,
         experience_year,
         region,
-        work_address,
         gender,
         fees,
       } = req.body;
@@ -28,6 +28,7 @@ class PsikiaterController {
           password: password,
           email: email,
           date_of_birth: date_of_birth,
+          work_address: work_address,
           info: {
             experience_year: experience_year,
             region: region,
