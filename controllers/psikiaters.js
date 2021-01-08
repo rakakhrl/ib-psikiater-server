@@ -87,8 +87,11 @@ class PsikiaterController {
   static getPsikiaterDataByRegion = async (req, res, next) => {
     try {
       const { region } = req.params;
+      const searchingRegex = new RegExp(region, "i");
       const psikiaterData = await PsikiaterModel.find({
-        "info.region": region,
+        "info.region": {
+          $regex: searchingRegex,
+        },
       });
 
       if (!psikiaterData) {
