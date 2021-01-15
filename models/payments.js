@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const paymentSchema = new mongoose.Schema(
   {
     patient: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Patients",
     },
     payment_type: {
