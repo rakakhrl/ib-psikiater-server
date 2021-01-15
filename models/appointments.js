@@ -34,6 +34,10 @@ const appointmentSchema = new mongoose.Schema(
       required: true,
       default: "Unpaid",
     },
+    isOnline: {
+      type: Boolean,
+      required: true,
+    },
     allergy: [String],
     diagnose: {
       diagnose_name: {
