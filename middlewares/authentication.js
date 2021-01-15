@@ -41,7 +41,7 @@ const authentication = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next(error);
+    throw new Error("gagal checkout")
   }
 };
 
