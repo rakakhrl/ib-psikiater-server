@@ -31,6 +31,7 @@ class AppointmentController {
           { $or: [{ status: "Paid" }, { status: "Done" }] },
         ],
       })
+        .sort({ _id: "desc" })
         .populate("psikiater_id")
         .populate("patient_id")
         .populate("prescription_id");
@@ -55,6 +56,7 @@ class AppointmentController {
           { $or: [{ status: "Paid" }, { status: "Done" }] },
         ],
       })
+        .sort({ _id: "desc" })
         .populate("psikiater_id")
         .populate("patient_id")
         .populate("prescription_id");
