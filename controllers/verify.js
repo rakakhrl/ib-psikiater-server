@@ -12,7 +12,6 @@ class VerifyController {
       if (!verifyData) {
         throw new Error("Verification failed");
       }
-
       if (verifyData && token) {
         res.status(204).send({
           message: "success verification",
