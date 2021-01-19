@@ -37,7 +37,7 @@ class AuthController {
       const verificationToken = jwt.sign(
         {
           email: patient.email,
-          role: "PATIENT",
+          role: PATIENT,
         },
         SECRET_KEY
       );
@@ -132,6 +132,14 @@ class AuthController {
 
       if (!patient && !psikiater) {
         throw new Error("Email or password is invalid.");
+      }
+
+      if (patient && !patient.is_active) {
+        throw new Error("Your email address is not verified.");
+      }
+
+      if (psikiater && !psikiater.is_active) {
+        throw new Error("Your email address is not verified.");
       }
 
       if (patient && bcrypt.compareSync(password, patient.password)) {
