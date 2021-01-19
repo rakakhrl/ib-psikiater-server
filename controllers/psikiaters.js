@@ -86,6 +86,7 @@ class PsikiaterController {
   };
 
   static getPsikiaterDataByRegion = async (req, res, next) => {
+    //modif
     try {
       const { region } = req.query;
       const searchingRegex = new RegExp(region, "i");
