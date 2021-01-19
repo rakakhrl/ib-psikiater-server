@@ -20,9 +20,7 @@ const emailer = async (receiver, subject, htmlContent) => {
       html: htmlContent,
     });
 
-    console.log("Message sent: %s", mail.messageId);
-
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(mail));
+    return mail;
   } catch (error) {
     console.error(error);
   }
