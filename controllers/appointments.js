@@ -81,6 +81,7 @@ class AppointmentController {
         allergy,
         diagnose_name,
         diagnose_date,
+        isOnline,
       } = req.body;
 
       const appointmentData = {
@@ -90,6 +91,7 @@ class AppointmentController {
         appointment_time: appointment_time,
         complaint: complaint,
         allergy: allergy,
+        isOnline: isOnline,
         diagnose: {
           diagnose_name: diagnose_name,
           diagnose_date: diagnose_date,
