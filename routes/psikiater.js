@@ -5,7 +5,7 @@ const authorization = require("../middlewares/authorization");
 const authentication = require("../middlewares/authentication");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
-Router.get("/search/:region", psikiaterController.getPsikiaterDataByRegion);
+Router.get("/search", psikiaterController.getSearching);
 
 Router.use(authentication);
 
