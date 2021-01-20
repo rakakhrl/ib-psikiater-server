@@ -1,9 +1,13 @@
 const PatientsModel = require("../models/patients");
 const PsikiaterModel = require("../models/psikiaters");
+const VerifyModel = require("../models/verify");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY;
+const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
+const PORT = process.env.PORT;
 const { PATIENT, PSIKIATER } = require("../constants/role");
+const emailer = require("../utilities/emailer");
 
 class AuthController {
   static registerPatient = async (req, res, next) => {
@@ -30,19 +34,39 @@ class AuthController {
 
       const patient = await PatientsModel.create(patientData);
 
-      const tokenPayload = {
-        user_id: patient._id,
-        role: PATIENT,
-      };
+      const verificationToken = jwt.sign(
+        {
+          email: patient.email,
+          role: PATIENT,
+        },
+        SECRET_KEY
+      );
 
-      const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
+      const tokenDoc = await VerifyModel.create({
+        email: patient.email,
+        activation_token: verificationToken,
+      });
+
+      if (!tokenDoc) {
+        throw new Error("Failed storing verification token");
+      }
+
+      const emailSent = await emailer(
+        patient.email,
+        "Verification Link",
+        `<h3><strong>Clink this link to verify your account: </strong>http://${SERVER_IP_ADDRESS}:${PORT}/verify-user/verify/${verificationToken}</h3>`
+      );
+
+      if (!emailSent.messageId) {
+        throw new Error("Failed sending email verification");
+      }
+
+      console.log(`messageId: ${emailSent.messageId}`);
 
       res.status(201).json({
         status: "Success",
         message: "Success create patient data.",
         data: patient,
-        role: PATIENT,
-        token: jwtToken,
       });
     } catch (error) {
       next(error);
@@ -108,6 +132,14 @@ class AuthController {
 
       if (!patient && !psikiater) {
         throw new Error("Email or password is invalid.");
+      }
+
+      if (patient && !patient.is_active) {
+        throw new Error("Your email address is not verified.");
+      }
+
+      if (psikiater && !psikiater.is_active) {
+        throw new Error("Your email address is not verified.");
       }
 
       if (patient && bcrypt.compareSync(password, patient.password)) {

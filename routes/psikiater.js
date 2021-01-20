@@ -5,6 +5,11 @@ const authorization = require("../middlewares/authorization");
 const authentication = require("../middlewares/authentication");
 const { PATIENT, PSIKIATER } = require("../constants/role");
 
+Router.get(
+  "/rating/:psychiatrist_id",
+  psikiaterController.getPsychiatristRating
+);
+
 Router.get("/search", psikiaterController.getSearching);
 
 Router.use(authentication);

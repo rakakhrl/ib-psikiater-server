@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const PsikiaterModel = require("../models/psikiaters");
 const PORT = process.env.PORT;
 const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
@@ -98,19 +99,20 @@ class PsikiaterController {
         },
       });
 
-      if (!psikiaterData) {
-        throw new Error("Unable to get psikiater data");
+      if (!psikiater) {
+        throw new Error("No psychiatrist found.");
       }
 
       res.status(200).json({
         status: "Success",
-        message: "Success get psikiater data",
-        data: psikiaterData,
+        message: "Success get psychiatrist data",
+        data: psikiater,
       });
     } catch (error) {
       next(error);
     }
   };
+
   static getPsikiaterDataById = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -124,6 +126,58 @@ class PsikiaterController {
         status: "Success",
         message: "Success Get Psikiater Data",
         data: psikiaterData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static getPsychiatristRating = async (req, res, next) => {
+    try {
+      const { psychiatris_id } = req.params;
+
+      const rating = await PsikiaterModel.aggregate([
+        {
+          $match: {
+            _id: mongoose.Types._ObjectId(psychiatris_id),
+          },
+        },
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "psikiater_id",
+            as: "review",
+          },
+        },
+        {
+          $unwind: { path: "$review", preserveNullAndEmptyArrays: true },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            total_review: {
+              $sum: 1,
+            },
+            average_score: {
+              $avg: "$review.rating",
+            },
+          },
+        },
+        {
+          $project: {
+            review: {
+              total_review: "$total_review",
+              average_rating: "$average_score",
+            },
+          },
+        },
+      ]);
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Get Psikiater Rating",
+        data: rating,
       });
     } catch (error) {
       next(error);

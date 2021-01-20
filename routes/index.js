@@ -6,6 +6,7 @@ const authRoutes = require("./auth");
 const scheduleRouter = require("./schedules");
 const prescriptionRouter = require("./prescriptions");
 const appointmentRouter = require("./appoinments");
+const paymentRouter = require("./payments");
 const verifyRouter = require("./verify");
 const path = require("path");
 
@@ -28,5 +29,7 @@ Router.use("/patients", patientRouter);
 Router.use("/schedule", scheduleRouter);
 
 Router.use("/prescriptions", prescriptionRouter);
+
+Router.use("/payments", paymentRouter);
 
 module.exports = Router;
