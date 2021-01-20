@@ -6,6 +6,8 @@ const paymentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patients",
     },
+    product_type: String,
+    product_detail: Map,
     payment_type: {
       type: String,
       required: true,
