@@ -7,7 +7,7 @@ class PsikiaterController {
   static updatePsikiaterData = async (req, res, next) => {
     try {
       const {
-        status,
+        is_active,
         first_name,
         last_name,
         email,
@@ -18,12 +18,13 @@ class PsikiaterController {
         region,
         gender,
         fees,
+        specialize,
       } = req.body;
 
       const psikiaterData = await PsikiaterModel.findByIdAndUpdate(
         req.params.id,
         {
-          status: status,
+          is_active: is_active,
           first_name: first_name,
           last_name: last_name,
           password: password,
@@ -37,6 +38,7 @@ class PsikiaterController {
           work_address: work_address,
           gender: gender,
           fees: fees,
+          specialize: specialize,
         },
         {
           new: true,
@@ -85,15 +87,17 @@ class PsikiaterController {
     }
   };
 
-  static getPsikiaterDataByRegion = async (req, res, next) => {
-    //modif
+  static getSearching = async (req, res, next) => {
     try {
-      const { region } = req.query;
-      const searchingRegex = new RegExp(region, "i");
-
-      const psikiater = await PsikiaterModel.find({
+      const { region, first_name } = req.query;
+      const searchingRegion = new RegExp(region, "i");
+      const searchingName = new RegExp(first_name, "i");
+      const psikiaterData = await PsikiaterModel.find({
         "info.region": {
-          $regex: searchingRegex,
+          $regex: searchingRegion,
+        },
+        first_name: {
+          $regex: searchingName,
         },
       });
 
