@@ -83,6 +83,7 @@ class AuthController {
         date_of_birth,
         work_address,
         gender,
+        specialize,
         experience_year,
         region,
         fees,
@@ -96,6 +97,7 @@ class AuthController {
         date_of_birth: date_of_birth,
         work_address: work_address,
         gender: gender,
+        specialize: specialize,
         info: {
           experience_year: experience_year,
           region: region,
