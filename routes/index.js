@@ -8,9 +8,12 @@ const prescriptionRouter = require("./prescriptions");
 const appointmentRouter = require("./appoinments");
 const paymentRouter = require("./payments");
 const verifyRouter = require("./verify");
+// const approvalRouter = require("./approval");
 const path = require("path");
 
 const authentication = require("../middlewares/authentication");
+
+// Router.use("/approval-psikiater", approvalRouter);
 
 Router.use("/auth", authRoutes);
 
