@@ -4,6 +4,9 @@ const upload = require("../middlewares/multer");
 const authorization = require("../middlewares/authorization");
 const { PATIENT } = require("../constants/role");
 
+Router.get("/", PaymentController.getAll);
+Router.get("/:payment_id", PaymentController.getOneById);
+
 Router.use(authorization(PATIENT));
 
 Router.post(
