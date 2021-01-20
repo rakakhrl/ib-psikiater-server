@@ -18,11 +18,11 @@ Router.use("/psikiater", psikiaterRouter);
 
 Router.use("/verify-user", verifyRouter);
 
-Router.use("/reviews", reviewRouter);
-
 Router.use(authentication);
 
 Router.use("/appointments", appointmentRouter);
+
+Router.use("/reviews", reviewRouter);
 
 Router.use("/patients", patientRouter);
 
