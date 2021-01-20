@@ -130,6 +130,24 @@ class PsikiaterController {
     }
   };
 
+  static getAllPsikiaterData = async (req, res, next) => {
+    try {
+      const psikiaterData = await PsikiaterModel.find();
+
+      if (!psikiaterData) {
+        throw new Error("Psikiater Not Found");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Get All Psychiatrist Data",
+        data: psikiaterData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static getPsychiatristRating = async (req, res, next) => {
     try {
       const { psychiatris_id } = req.params;
