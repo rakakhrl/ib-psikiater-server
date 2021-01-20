@@ -18,6 +18,7 @@ class PsikiaterController {
         region,
         gender,
         fees,
+        specialize,
       } = req.body;
 
       const psikiaterData = await PsikiaterModel.findByIdAndUpdate(
@@ -37,6 +38,7 @@ class PsikiaterController {
           work_address: work_address,
           gender: gender,
           fees: fees,
+          specialize: specialize,
         },
         {
           new: true,
