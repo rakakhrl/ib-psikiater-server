@@ -16,12 +16,10 @@ class FirebaseController{
                 consultationTime: consultationTime,
             };
             const message = await db.collection('Message').doc().set(firebaseData);
-            const idDoc = await db.collection('Message').doc().get();
             res.status(201).json({
                 status: "Success",
                 message: "Import success",
-                data: firebaseData,
-                tes: idDoc,
+                data: message,
             })
         } catch (error) {
             next(error);
