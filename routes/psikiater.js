@@ -10,7 +10,7 @@ Router.get(
   psikiaterController.getPsychiatristRating
 );
 
-Router.get("/search", psikiaterController.getPsikiaterDataByRegion);
+Router.get("/search", psikiaterController.getSearching);
 
 Router.get("/", psikiaterController.getAllPsikiaterData);
 
