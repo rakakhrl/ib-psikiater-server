@@ -6,8 +6,8 @@ const authRoutes = require("./auth");
 const scheduleRouter = require("./schedules");
 const prescriptionRouter = require("./prescriptions");
 const appointmentRouter = require("./appoinments");
-const paymentRouter = require("./payment")
-const firebase = require("./firebase")
+const paymentRouter = require("./payments");
+const verifyRouter = require("./verify");
 const path = require("path");
 
 
@@ -18,6 +18,8 @@ Router.use("/user",firebase);
 Router.use("/auth", authRoutes);
 
 Router.use("/psikiater", psikiaterRouter);
+
+Router.use("/verify-user", verifyRouter);
 
 Router.use(authentication);
 
@@ -31,6 +33,6 @@ Router.use("/schedule", scheduleRouter);
 
 Router.use("/prescriptions", prescriptionRouter);
 
-Router.use("/payment", paymentRouter);
+Router.use("/payments", paymentRouter);
 
 module.exports = Router;
