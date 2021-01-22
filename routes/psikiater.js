@@ -14,9 +14,9 @@ Router.get("/search", psikiaterController.getSearching);
 
 Router.get("/", psikiaterController.getAllPsikiaterData);
 
-Router.use(authentication);
-
 Router.get("/:id", psikiaterController.getPsikiaterDataById);
+
+Router.use(authentication);
 
 Router.use(authorization(PSIKIATER));
 
