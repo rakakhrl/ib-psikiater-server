@@ -49,6 +49,10 @@ const appointmentSchema = new mongoose.Schema(
         default: "",
       },
     },
+    roomChat_id:{
+        type: String,
+        default:"",
+    },
   },
 
   {
