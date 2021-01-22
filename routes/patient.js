@@ -6,6 +6,8 @@ const { PATIENT, PSIKIATER } = require("../constants/role");
 
 Router.get("/:id", PatientController.getPatientDataByIdPatient);
 
+Router.get("/", PatientController.getAllPatientData);
+
 Router.use(authorization(PATIENT));
 
 Router.post(

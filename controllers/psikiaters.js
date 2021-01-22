@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const PsikiaterModel = require("../models/psikiaters");
+const ReviewModel = require("../models/reviews");
 const PORT = process.env.PORT;
 const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
 
@@ -7,7 +8,7 @@ class PsikiaterController {
   static updatePsikiaterData = async (req, res, next) => {
     try {
       const {
-        status,
+        is_active,
         first_name,
         last_name,
         email,
@@ -18,12 +19,13 @@ class PsikiaterController {
         region,
         gender,
         fees,
+        specialize,
       } = req.body;
 
       const psikiaterData = await PsikiaterModel.findByIdAndUpdate(
         req.params.id,
         {
-          status: status,
+          is_active: is_active,
           first_name: first_name,
           last_name: last_name,
           password: password,
@@ -37,6 +39,7 @@ class PsikiaterController {
           work_address: work_address,
           gender: gender,
           fees: fees,
+          specialize: specialize,
         },
         {
           new: true,
@@ -85,15 +88,17 @@ class PsikiaterController {
     }
   };
 
-  static getPsikiaterDataByRegion = async (req, res, next) => {
-    //modif
+  static getSearching = async (req, res, next) => {
     try {
-      const { region } = req.query;
-      const searchingRegex = new RegExp(region, "i");
-
-      const psikiater = await PsikiaterModel.find({
+      const { region, first_name } = req.query;
+      const searchingRegion = new RegExp(region, "i");
+      const searchingName = new RegExp(first_name, "i");
+      const psikiaterData = await PsikiaterModel.find({
         "info.region": {
-          $regex: searchingRegex,
+          $regex: searchingRegion,
+        },
+        first_name: {
+          $regex: searchingName,
         },
       });
 
@@ -130,14 +135,32 @@ class PsikiaterController {
     }
   };
 
+  static getAllPsikiaterData = async (req, res, next) => {
+    try {
+      const psikiaterData = await PsikiaterModel.find();
+
+      if (!psikiaterData) {
+        throw new Error("Psikiater Not Found");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Get All Psychiatrist Data",
+        data: psikiaterData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static getPsychiatristRating = async (req, res, next) => {
     try {
-      const { psychiatris_id } = req.params;
+      const { psychiatrist_id } = req.params;
 
-      const rating = await PsikiaterModel.aggregate([
+      const rating = await ReviewModel.aggregate([
         {
           $match: {
-            _id: mongoose.Types._ObjectId(psychiatris_id),
+            psikiater_id: mongoose.Types.ObjectId(psychiatrist_id),
           },
         },
         {
@@ -149,16 +172,19 @@ class PsikiaterController {
           },
         },
         {
-          $unwind: { path: "$review", preserveNullAndEmptyArrays: true },
+          $unwind: {
+            path: "$review",
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $group: {
-            _id: "$_id",
+            _id: "$psikiater_id",
             total_review: {
               $sum: 1,
             },
             average_score: {
-              $avg: "$review.rating",
+              $avg: "$rating",
             },
           },
         },
@@ -175,7 +201,7 @@ class PsikiaterController {
       res.status(200).json({
         status: "Success",
         message: "Success Get Psikiater Rating",
-        data: rating,
+        data: !rating.length ? null : rating[0],
       });
     } catch (error) {
       next(error);
