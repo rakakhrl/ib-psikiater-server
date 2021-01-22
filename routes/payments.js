@@ -9,6 +9,7 @@ Router.get("/:payment_id", PaymentController.getOneById);
 
 Router.use(authorization(PATIENT));
 
+Router.post("/checkout",PaymentController.paymentCheckout);
 Router.post(
   "/upload-slip/:payment_id",
   upload.single("profile_photo"),

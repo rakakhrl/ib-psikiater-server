@@ -50,7 +50,7 @@ const authentication = async (req, res, next) => {
 
     next();
   } catch (error) {
-    throw new Error("gagal checkout")
+    next(error);
   }
 };
 
