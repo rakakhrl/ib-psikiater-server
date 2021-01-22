@@ -43,7 +43,8 @@ const patientSchema = new mongoose.Schema(
     },
     avatar_url: {
       type: String,
-      default: "",
+      default:
+        "https://www.suitdoctors.com/wp-content/uploads/2016/11/dummy-man-570x570.png",
     },
     address: {
       type: String,
