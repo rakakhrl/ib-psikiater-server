@@ -8,17 +8,11 @@ const paymentSchema = new mongoose.Schema(
     },
     product_type: String,
     product_detail: Map,
-    payment_type: {
+    product_price: {
       type: String,
-      required: true,
-    },
-    amount: {
-      type: String,
-      required: true,
     },
     payment_method: {
       type: String,
-      required: true,
     },
     payment_status: {
       type: String,
