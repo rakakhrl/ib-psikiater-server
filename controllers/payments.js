@@ -9,7 +9,7 @@ class PaymentController {
         patient: patient,
         product_type: product_type,
         product_detail: product_detail,
-        product_price,
+        product_price: product_price,
       };
       const payment = await PaymentModel.create(paymentData);
       res.status(201).json({
@@ -25,7 +25,21 @@ class PaymentController {
     try {
       const { payment_id } = req.params;
 
-      const payment = await PaymentModel.findById(payment_id);
+      const payment = await PaymentModel.findById(payment_id)
+        .populate({
+          path: "product_detail",
+          populate: {
+            path: "psikiater_id",
+            model: "Psikiaters",
+          },
+        })
+        .populate({
+          path: "product_detail",
+          populate: {
+            path: "patient_id",
+            model: "Patients",
+          },
+        });
 
       res.status(200).json({
         status: "Success",
