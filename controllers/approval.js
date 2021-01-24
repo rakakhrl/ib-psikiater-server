@@ -28,12 +28,22 @@ class ApprovalController {
         activation_token: verificationToken,
       });
 
-      if (!accept) {
+      const reject = { email: email };
+
+      if (!accept && !reject) {
         throw new Error("failed sending email verification");
       }
 
+      if (accept && !accept.email) {
+        throw new Error("Your email address is not verified.");
+      }
+
+      if (reject && !reject.email) {
+        throw new Error("Your email address is not verified.");
+      }
+
       const emailSent = await emailer(
-        psikiaterData.email,
+        email,
         "Verification Link",
         `<h3><strong>Clink this link to verify your account: </strong>http://${SERVER_IP_ADDRESS}:${PORT}/verify-user/verify/${verificationToken}</h3>`
       );
@@ -42,22 +52,14 @@ class ApprovalController {
         throw new Error("Failed sending email verification");
       }
 
-      const reject = await {
-        email: psikiaterData.email,
-      };
-
-      if (!reject) {
-        throw new Error("failed sending denial verification");
-      }
-
       const emailReject = await emailer(
-        psikiaterData.email,
-        "Rejected",
-        `<h3>Verification rejected by Admin</h3>`
+        email,
+        "Rejected Verification",
+        `<h3>Oops! Sorry verification reject by Admin</h3>`
       );
 
       if (!emailReject.messageId) {
-        throw new Error("Failed sending rejected email");
+        throw new Error("Failed sending email verification");
       }
 
       res.sendStatus(204);

@@ -7,6 +7,8 @@ const { PATIENT } = require("../constants/role");
 Router.get("/", PaymentController.getAll);
 Router.get("/:payment_id", PaymentController.getOneById);
 
+Router.post("/payment-status/:id", PaymentController.approvalPayment);
+
 Router.use(authorization(PATIENT));
 
 Router.post(

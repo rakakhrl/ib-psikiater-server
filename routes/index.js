@@ -13,6 +13,8 @@ const path = require("path");
 
 const authentication = require("../middlewares/authentication");
 
+Router.use("/payments", paymentRouter);
+
 Router.use("/approval-psikiater", approvalRouter);
 
 Router.use("/auth", authRoutes);
@@ -32,7 +34,5 @@ Router.use("/patients", patientRouter);
 Router.use("/schedule", scheduleRouter);
 
 Router.use("/prescriptions", prescriptionRouter);
-
-Router.use("/payments", paymentRouter);
 
 module.exports = Router;
