@@ -49,6 +49,11 @@ const patientSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+      required: true,
+    }
   },
   {
     versionKey: false,
