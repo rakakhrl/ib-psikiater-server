@@ -5,15 +5,22 @@ const paymentSchema = new mongoose.Schema(
     patient: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patients",
+      required: true,
     },
-    product_type: String,
-    product_detail: Map,
+    product_type: {
+      type: String,
+      required: true,
+    },
+    product_detail: {
+      type: Object,
+      required: true,
+    },
     payment_type: {
       type: String,
       required: true,
     },
     amount: {
-      type: String,
+      type: mongoose.Schema.Types.Number,
       required: true,
     },
     payment_method: {

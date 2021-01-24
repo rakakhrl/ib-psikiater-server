@@ -11,7 +11,7 @@ Router.use(authorization(PATIENT));
 
 Router.post(
   "/upload-slip/:payment_id",
-  upload.single("profile_photo"),
+  upload.single("payment_slip"),
   PaymentController.uploadPaymentSlip
 );
 

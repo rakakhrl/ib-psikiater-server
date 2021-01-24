@@ -93,7 +93,7 @@ class PsikiaterController {
       const { region, first_name } = req.query;
       const searchingRegion = new RegExp(region, "i");
       const searchingName = new RegExp(first_name, "i");
-      const psikiaterData = await PsikiaterModel.find({
+      const psikiater = await PsikiaterModel.find({
         "info.region": {
           $regex: searchingRegion,
         },
