@@ -2,23 +2,14 @@ const PaymentModel = require("../models/payments");
 
 class PaymentController {
   static paymentCheckout = async (req, res, next) => {
-    const {
-      patient,
-      payment_type,
-      amount,
-      payment_method,
-      payment_status,
-      slip_url,
-    } = req.body;
+    const { patient, product_type, product_detail, product_price } = req.body;
 
     try {
       const paymentData = {
         patient: patient,
-        payment_type: payment_type,
-        amount: amount,
-        payment_method: payment_method,
-        payment_status: payment_status,
-        slip_url: slip_url,
+        product_type: product_type,
+        product_detail: product_detail,
+        product_price: product_price,
       };
       const payment = await PaymentModel.create(paymentData);
       res.status(201).json({
@@ -34,7 +25,21 @@ class PaymentController {
     try {
       const { payment_id } = req.params;
 
-      const payment = await PaymentModel.findById(payment_id);
+      const payment = await PaymentModel.findById(payment_id)
+        .populate({
+          path: "product_detail",
+          populate: {
+            path: "psikiater_id",
+            model: "Psikiaters",
+          },
+        })
+        .populate({
+          path: "product_detail",
+          populate: {
+            path: "patient_id",
+            model: "Patients",
+          },
+        });
 
       res.status(200).json({
         status: "Success",
@@ -48,7 +53,21 @@ class PaymentController {
 
   static getAllPending = async (req, res, next) => {
     try {
-      const payments = await PaymentModel.find({ payment_status: "Pending" });
+      const payments = await PaymentModel.find({ payment_status: "Pending" })
+        .populate({
+          path: "product_detail",
+          populate: {
+            path: "psikiater_id",
+            model: "Psikiaters",
+          },
+        })
+        .populate({
+          path: "product_detail",
+          populate: {
+            path: "patient_id",
+            model: "Patients",
+          },
+        });
 
       res.status(200).json({
         status: "Success",
@@ -82,6 +101,31 @@ class PaymentController {
         status: "Success",
         message: "Upload Success",
         data: uploadSlip,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static updatePaymentMethod = async (req, res, next) => {
+    try {
+      const { payment_id, payment_method } = req.body;
+      const paymentData = await PaymentModel.findByIdAndUpdate(
+        payment_id,
+        {
+          payment_method: payment_method,
+        },
+        { new: true }
+      );
+
+      if (!paymentData) {
+        throw new Error("Please Choose Payment Method");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Choose Payment Method",
+        data: paymentData,
       });
     } catch (error) {
       next(error);
