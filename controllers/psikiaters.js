@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const PsikiaterModel = require("../models/psikiaters");
+const ReviewModel = require("../models/reviews");
 const PORT = process.env.PORT;
 const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
 
@@ -92,7 +93,7 @@ class PsikiaterController {
       const { region, first_name } = req.query;
       const searchingRegion = new RegExp(region, "i");
       const searchingName = new RegExp(first_name, "i");
-      const psikiaterData = await PsikiaterModel.find({
+      const psikiater = await PsikiaterModel.find({
         "info.region": {
           $regex: searchingRegion,
         },
@@ -154,12 +155,12 @@ class PsikiaterController {
 
   static getPsychiatristRating = async (req, res, next) => {
     try {
-      const { psychiatris_id } = req.params;
+      const { psychiatrist_id } = req.params;
 
-      const rating = await PsikiaterModel.aggregate([
+      const rating = await ReviewModel.aggregate([
         {
           $match: {
-            _id: mongoose.Types._ObjectId(psychiatris_id),
+            psikiater_id: mongoose.Types.ObjectId(psychiatrist_id),
           },
         },
         {
@@ -171,16 +172,19 @@ class PsikiaterController {
           },
         },
         {
-          $unwind: { path: "$review", preserveNullAndEmptyArrays: true },
+          $unwind: {
+            path: "$review",
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $group: {
-            _id: "$_id",
+            _id: "$psikiater_id",
             total_review: {
               $sum: 1,
             },
             average_score: {
-              $avg: "$review.rating",
+              $avg: "$rating",
             },
           },
         },
@@ -197,7 +201,7 @@ class PsikiaterController {
       res.status(200).json({
         status: "Success",
         message: "Success Get Psikiater Rating",
-        data: rating,
+        data: !rating.length ? null : rating[0],
       });
     } catch (error) {
       next(error);

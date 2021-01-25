@@ -5,20 +5,49 @@ const paymentSchema = new mongoose.Schema(
     patient: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patients",
+      required: true,
     },
-    product_type: String,
-    product_detail: Map,
-    payment_type: {
+    product_type: {
       type: String,
       required: true,
     },
-    amount: {
-      type: String,
+    product_detail: {
+      complaint: {
+        type: String,
+        required: true,
+      },
+      allergy: {
+        type: String,
+      },
+      psikiater_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Psikiaters",
+        required: true,
+      },
+      patient_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Patients",
+        required: true,
+      },
+      appointment_date: {
+        type: Date,
+        required: true,
+      },
+      appointment_time: {
+        type: String,
+        required: true,
+      },
+      isOnline: {
+        type: Boolean,
+        required: true,
+      },
+    },
+    product_price: {
+      type: mongoose.Schema.Types.Number,
       required: true,
     },
     payment_method: {
       type: String,
-      required: true,
     },
     payment_status: {
       type: String,
