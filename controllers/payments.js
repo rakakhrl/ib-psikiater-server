@@ -1,35 +1,35 @@
 const PaymentModel = require("../models/payments");
 
 class PaymentController {
-  static paymentCheckout = async (req,res,next)=>{
+  static paymentCheckout = async (req, res, next) => {
     const {
-        patient,
-        payment_type,
-        amount,
-        payment_method,
-        payment_status,
-        slip_url,
-    }= req.body;
+      patient,
+      payment_type,
+      amount,
+      payment_method,
+      payment_status,
+      slip_url,
+    } = req.body;
 
     try {
-        const paymentData = {
-            patient:patient,
-            payment_type:payment_type,
-            amount:amount,
-            payment_method:payment_method,
-            payment_status:payment_status,
-            slip_url:slip_url, 
-        };
-        const payment = await PaymentModel.create(paymentData);
-        res.status(201).json({
-            status: "Success",
-            message: "Checkout success",
-            data: payment,
-        })
+      const paymentData = {
+        patient: patient,
+        payment_type: payment_type,
+        amount: amount,
+        payment_method: payment_method,
+        payment_status: payment_status,
+        slip_url: slip_url,
+      };
+      const payment = await PaymentModel.create(paymentData);
+      res.status(201).json({
+        status: "Success",
+        message: "Checkout success",
+        data: payment,
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
-}
+  };
   static getOneById = async (req, res, next) => {
     try {
       const { payment_id } = req.params;
@@ -46,13 +46,13 @@ class PaymentController {
     }
   };
 
-  static getAll = async (req, res, next) => {
+  static getAllPending = async (req, res, next) => {
     try {
-      const payments = await PaymentModel.find();
+      const payments = await PaymentModel.find({ payment_status: "Pending" });
 
       res.status(200).json({
         status: "Success",
-        message: "Get all payment success",
+        message: "Get all pending payment success",
         data: payments,
       });
     } catch (error) {
