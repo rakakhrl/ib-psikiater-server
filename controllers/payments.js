@@ -92,6 +92,31 @@ class PaymentController {
       next(error);
     }
   };
+
+  static updatePaymentMethod = async (req, res, next) => {
+    try {
+      const { payment_id, payment_method } = req.body;
+      const paymentData = await PaymentModel.findByIdAndUpdate(
+        payment_id,
+        {
+          payment_method: payment_method,
+        },
+        { new: true }
+      );
+
+      if (!paymentData) {
+        throw new Error("Please Choose Payment Method");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Choose Payment Method",
+        data: paymentData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = PaymentController;
