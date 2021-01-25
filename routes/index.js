@@ -9,20 +9,18 @@ const appointmentRouter = require("./appoinments");
 const paymentRouter = require("./payments");
 const verifyRouter = require("./verify");
 const firebase = require("./firebase");
-const statusAppointment = require("./admin");
-const path = require("path");
-
-
-Router.use("/admin",statusAppointment);
+const adminRouter = require("./admins");
 
 const authentication = require("../middlewares/authentication");
-Router.use("/user",firebase);
+Router.use("/user", firebase);
 
 Router.use("/auth", authRoutes);
 
 Router.use("/psikiater", psikiaterRouter);
 
 Router.use("/verify-user", verifyRouter);
+
+Router.use("/admin", adminRouter);
 
 Router.use(authentication);
 

@@ -38,7 +38,7 @@ const appointmentSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    allergy: [String],
+    allergy: String,
     diagnose: {
       diagnose_name: {
         type: String,
@@ -49,9 +49,9 @@ const appointmentSchema = new mongoose.Schema(
         default: "",
       },
     },
-    roomChat_id:{
-        type: String,
-        default:"",
+    roomChat_id: {
+      type: String,
+      default: "",
     },
   },
 

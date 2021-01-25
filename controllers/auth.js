@@ -1,12 +1,13 @@
 const PatientsModel = require("../models/patients");
 const PsikiaterModel = require("../models/psikiaters");
+const AdminModel = require("../models/admin");
 const VerifyModel = require("../models/verify");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY;
 const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
 const PORT = process.env.PORT;
-const { PATIENT, PSIKIATER } = require("../constants/role");
+const { PATIENT, PSIKIATER, ADMIN } = require("../constants/role");
 const emailer = require("../utilities/emailer");
 
 class AuthController {
@@ -131,8 +132,9 @@ class AuthController {
 
       const patient = await PatientsModel.findOne({ email: email });
       const psikiater = await PsikiaterModel.findOne({ email: email });
+      const admin = await AdminModel.findOne({ email: email });
 
-      if (!patient && !psikiater) {
+      if (!patient && !psikiater && !admin) {
         throw new Error("Email or password is invalid.");
       }
 
@@ -165,6 +167,19 @@ class AuthController {
           data: psikiater,
           token: jwt.sign(
             { user_id: psikiater._id, role: PSIKIATER },
+            process.env.SECRET_KEY
+          ),
+        });
+      }
+
+      if (admin && bcrypt.compareSync(password, admin.password)) {
+        res.status(200).json({
+          status: "success",
+          message: "Login successfull.",
+          role: ADMIN,
+          data: admin,
+          token: jwt.sign(
+            { user_id: admin._id, role: ADMIN },
             process.env.SECRET_KEY
           ),
         });
