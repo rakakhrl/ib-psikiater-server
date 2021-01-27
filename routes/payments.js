@@ -7,6 +7,8 @@ const { PATIENT, ADMIN } = require("../constants/role");
 Router.get("/pending", authorization(ADMIN), PaymentController.getAllPending);
 Router.get("/:payment_id", PaymentController.getOneById);
 
+Router.post("/payment-status/:id", PaymentController.approvalPayment);
+
 Router.use(authorization(PATIENT));
 
 Router.patch("/payment-method", PaymentController.updatePaymentMethod);

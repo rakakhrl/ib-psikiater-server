@@ -16,6 +16,8 @@ Router.use("/user", firebase);
 
 Router.use("/payments", paymentRouter);
 
+Router.use("/payments", paymentRouter);
+
 Router.use("/approval-psikiater", approvalRouter);
 
 Router.use("/auth", authRoutes);

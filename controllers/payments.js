@@ -115,25 +115,35 @@ class PaymentController {
     }
   };
 
-  static updatePaymentMethod = async (req, res, next) => {
+  static approvalPayment = async (req, res, next) => {
     try {
-      const { payment_id, payment_method } = req.body;
-      const paymentData = await PaymentModel.findByIdAndUpdate(
-        payment_id,
+      const { id, email } = req.params;
+      const { status } = req.body;
+      const accept = await AppointmentModel.findByIdAndUpdate(
+        id,
         {
-          payment_method: payment_method,
+          status: status,
+          email: email,
         },
         { new: true }
       );
 
-      if (!paymentData) {
-        throw new Error("Please Choose Payment Method");
+      if (!accept) {
+        throw new Error("Failed sending payment status to email");
+      }
+      const emailSent = await emailer(
+        email,
+        "Payment Received",
+        `<h3>Payment success status has been paid</h3>`
+      );
+
+      if (!emailSent) {
+        throw new Error("Failed sending payment status to email");
       }
 
       res.status(200).json({
-        status: "Success",
-        message: "Success Choose Payment Method",
-        data: paymentData,
+        message: "success",
+        data: accept,
       });
     } catch (error) {
       next(error);
