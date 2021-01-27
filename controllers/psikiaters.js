@@ -207,5 +207,24 @@ class PsikiaterController {
       next(error);
     }
   };
+
+  static getInactivePsychiatrist = async (req, res, next) => {
+    try {
+      const psychiatrist = await PsikiaterModel.find({ is_active: false });
+
+      if (!psychiatrist) {
+        throw new Error("Psikiater Not Found");
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Success Get All Inactive Psychiatrist",
+        data: psychiatrist,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
+
 module.exports = PsikiaterController;

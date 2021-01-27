@@ -54,6 +54,7 @@ class PaymentController {
   static getAllPending = async (req, res, next) => {
     try {
       const payments = await PaymentModel.find({ payment_status: "Pending" })
+        .populate("patient")
         .populate({
           path: "product_detail",
           populate: {
