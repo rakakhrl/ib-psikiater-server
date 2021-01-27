@@ -12,6 +12,7 @@ const approvalRouter = require("./approval");
 const path = require("path");
 
 const authentication = require("../middlewares/authentication");
+Router.use("/user", firebase);
 
 Router.use("/payments", paymentRouter);
 
@@ -23,11 +24,13 @@ Router.use("/psikiater", psikiaterRouter);
 
 Router.use("/verify-user", verifyRouter);
 
-Router.use("/reviews", reviewRouter);
+Router.use("/admin", adminRouter);
 
 Router.use(authentication);
 
 Router.use("/appointments", appointmentRouter);
+
+Router.use("/reviews", reviewRouter);
 
 Router.use("/patients", patientRouter);
 

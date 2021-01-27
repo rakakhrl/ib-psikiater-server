@@ -1,31 +1,39 @@
 const Router = require("express").Router();
-const psikiaterController = require("../controllers/psikiaters");
+const PsychiatristController = require("../controllers/psikiaters");
 const upload = require("../middlewares/multer");
 const authorization = require("../middlewares/authorization");
 const authentication = require("../middlewares/authentication");
-const { PATIENT, PSIKIATER } = require("../constants/role");
+const { ADMIN, PSIKIATER } = require("../constants/role");
 
 Router.get(
   "/rating/:psychiatrist_id",
-  psikiaterController.getPsychiatristRating
+  PsychiatristController.getPsychiatristRating
 );
 
-Router.get("/search", psikiaterController.getSearching);
+Router.get("/search", PsychiatristController.getSearching);
 
-Router.get("/", psikiaterController.getAllPsikiaterData);
+Router.get("/", PsychiatristController.getAllPsikiaterData);
 
-Router.get("/:id", psikiaterController.getPsikiaterDataById);
+Router.get("/:id", PsychiatristController.getPsikiaterDataById);
+
+Router.use(authentication);
+
+Router.get(
+  "/all/inactive",
+  authorization(ADMIN),
+  PsychiatristController.getInactivePsychiatrist
+);
 
 Router.use(authentication);
 
 Router.use(authorization(PSIKIATER));
 
-Router.patch("/:id", psikiaterController.updatePsikiaterData);
+Router.patch("/:id", PsychiatristController.updatePsikiaterData);
 
 Router.post(
   "/upload/:id",
   upload.single("profile_photo"),
-  psikiaterController.uploadAvatar
+  PsychiatristController.uploadAvatar
 );
 
 module.exports = Router;
