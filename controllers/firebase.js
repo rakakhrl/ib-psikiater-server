@@ -20,7 +20,6 @@ class FirebaseController {
       });
 
       const firebase_id = message.id;
-      console.log(firebase_id);
       const AppointmentDataUpdate = await AppointmentModel.findByIdAndUpdate(
         appointment_id,
         { roomChat_id: firebase_id },

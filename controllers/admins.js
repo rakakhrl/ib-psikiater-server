@@ -1,6 +1,7 @@
 const AdminModel = require("../models/admin");
 const bcrypt = require("bcrypt");
 const AppointmentModel = require("../models/appointments");
+const PaymentModel = require("../models/payments");
 const PatientModel = require("../models/patients");
 const emailer = require("../utilities/emailer");
 
@@ -32,40 +33,50 @@ class AdminController {
     }
   };
 
-  static updateStatusByAppointmentID = async (req, res, next) => {
+  static updateStatusByPaymentID = async (req, res, next) => {
     const { patient_id } = req.body;
     try {
       const PatientData = await PatientModel.findById(patient_id);
       const Data = {
         email: PatientData.email,
       };
-      const {status} = req.body;
-      const { appointment_id } = req.body;
-      const AppointmentData = await AppointmentModel.findByIdAndUpdate(
-        appointment_id,
-        { status: status },
+      const {payment_status} = req.body;
+      const { payment_id } = req.body;
+      const PaymentData = await PaymentModel.findByIdAndUpdate(
+        payment_id,
+        { payment_status: payment_status },
         { new: true }
       );
      
-      const FindAppointmentData = await AppointmentModel.findById(appointment_id);
-      const statusAppointment = FindAppointmentData.status;
-      if (statusAppointment === "Unpaid") {
+      const FindPaymentData = await PaymentModel.findById(payment_id);
+      const statusPayment = FindPaymentData.payment_status;
+      if (statusPayment === "Reject") {
         const emailSent = await emailer(
             PatientData.email,
             "Payment Status",
             `<h3><strong>Payment Reject Again</strong></h3>`
           );
-      }else if (statusAppointment === "Paid") {
+      }else if (statusPayment === "Accept") {
         const emailSent = await emailer(
           PatientData.email,
           "Payment Status",
           `<h3><strong>Payment Success</strong></h3>`
         );
-      }
+        const detailPayment = PaymentData.product_detail;
+        const appointmentData = {
+          psikiater_id : detailPayment.psikiater_id,
+          patient_id : detailPayment.patient_id,
+          appointment_date : detailPayment.appointment_date,
+          appointment_time : detailPayment.appointment_time,
+          complaint : detailPayment.complaint,
+          isOnline : detailPayment.isOnline
+        }
+        const appointment = await AppointmentModel.create(appointmentData);
 
+      }
+        
       res.status(200).json({
         status: "Success",
-        data: Data,
       });
     } catch (error) {
       next(error);

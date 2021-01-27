@@ -2,13 +2,33 @@ const PaymentModel = require("../models/payments");
 
 class PaymentController {
   static paymentCheckout = async (req, res, next) => {
-    const { patient, product_type, product_detail, product_price } = req.body;
+    const {
+      patient,
+      product_type,
+      complaint,
+      allergy,
+      psikiater_id,
+      patient_id,
+      appointment_date,
+      appointment_time,
+      isOnline,
+      product_price,
+      payment_method,
+    } = req.body;
 
     try {
       const paymentData = {
         patient: patient,
         product_type: product_type,
-        product_detail: product_detail,
+        product_detail: {
+          complaint: complaint,
+          allergy: allergy,
+          psikiater_id: psikiater_id,
+          patient_id: patient_id,
+          appointment_date: appointment_date,
+          appointment_time: appointment_time,
+          isOnline: isOnline,
+        },
         product_price: product_price,
       };
       const payment = await PaymentModel.create(paymentData);
