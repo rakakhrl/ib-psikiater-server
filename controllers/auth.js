@@ -62,8 +62,6 @@ class AuthController {
         throw new Error("Failed sending email verification");
       }
 
-      console.log(`messageId: ${emailSent.messageId}`);
-
       res.status(201).json({
         status: "Success",
         message: "Success create patient data.",
