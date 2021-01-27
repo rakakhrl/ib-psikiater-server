@@ -8,13 +8,15 @@ const prescriptionRouter = require("./prescriptions");
 const appointmentRouter = require("./appoinments");
 const paymentRouter = require("./payments");
 const verifyRouter = require("./verify");
+
 const approvalRouter = require("./approval");
 const path = require("path");
 
+const firebase = require("./firebase");
+const adminRouter = require("./admins");
+
 const authentication = require("../middlewares/authentication");
 Router.use("/user", firebase);
-
-Router.use("/payments", paymentRouter);
 
 Router.use("/payments", paymentRouter);
 
