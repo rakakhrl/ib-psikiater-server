@@ -9,27 +9,39 @@ const { PSIKIATER } = require("../constants/role");
 
 class ApprovalController {
   static approvalPsikiater = async (req, res, next) => {
-    const { email, reject } = req.body;
+    const { email, action } = req.body;
     try {
-      const psikiaterData = {
-        email: email,
-        reject: reject,
-      };
+      if (action === "reject") {
+        const emailSent = await emailer(
+          email,
+          "Reject",
+          `<h3>Oops sorry! registration has been reject Admin</h3>`
+        );
+        res.sendStatus(204);
+      }
 
       const verificationToken = jwt.sign(
         {
-          email: psikiaterData.email,
+          email: email,
           role: PSIKIATER,
         },
         SECRET_KEY
       );
+
+      const tokenVerify = await VerifyModel.create({
+        email: email,
+        activation_token: verificationToken,
+      });
+
+      if (!tokenVerify) {
+        throw new Error("Failed storing verification token");
+      }
 
       const emailSent = await emailer(
         email,
         "Verification Link",
         `<h3><strong>Clink this link to verify your account: </strong>http://${SERVER_IP_ADDRESS}:${PORT}/verify-user/verify/${verificationToken}</h3>`
       );
-
       res.sendStatus(204);
     } catch (error) {
       next(error);

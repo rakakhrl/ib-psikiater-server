@@ -8,16 +8,10 @@ const prescriptionRouter = require("./prescriptions");
 const appointmentRouter = require("./appoinments");
 const paymentRouter = require("./payments");
 const verifyRouter = require("./verify");
-<<<<<<< HEAD
 const approvalRouter = require("./approval");
 const path = require("path");
-=======
-const firebase = require("./firebase");
-const adminRouter = require("./admins");
->>>>>>> c97976465adc8b8c328afaf33665996d0898dbb2
 
 const authentication = require("../middlewares/authentication");
-Router.use("/user", firebase);
 
 Router.use("/payments", paymentRouter);
 
@@ -29,13 +23,11 @@ Router.use("/psikiater", psikiaterRouter);
 
 Router.use("/verify-user", verifyRouter);
 
-Router.use("/admin", adminRouter);
+Router.use("/reviews", reviewRouter);
 
 Router.use(authentication);
 
 Router.use("/appointments", appointmentRouter);
-
-Router.use("/reviews", reviewRouter);
 
 Router.use("/patients", patientRouter);
 
