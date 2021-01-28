@@ -4,6 +4,7 @@ const AppointmentModel = require("../models/appointments");
 const PaymentModel = require("../models/payments");
 const PatientModel = require("../models/patients");
 const emailer = require("../utilities/emailer");
+const chatroom = require("../utilities/chatroom");
 
 class AdminController {
   static createAdmin = async (req, res, next) => {
@@ -21,63 +22,101 @@ class AdminController {
         throw new Error("Failed creating admin");
       }
 
-      res
-        .status(202)
-        .json({
-          status: "success",
-          message: "Successfully created admin",
-          data: admin,
-        });
+      res.status(202).json({
+        status: "success",
+        message: "Successfully created admin",
+        data: admin,
+      });
     } catch (error) {
       next(error);
     }
   };
 
-  static updateStatusByPaymentID = async (req, res, next) => {
-    const { patient_id } = req.body;
+  static paymentApproval = async (req, res, next) => {
     try {
-      const PatientData = await PatientModel.findById(patient_id);
-      const Data = {
-        email: PatientData.email,
-      };
-      const {payment_status} = req.body;
-      const { payment_id } = req.body;
-      const PaymentData = await PaymentModel.findByIdAndUpdate(
-        payment_id,
-        { payment_status: payment_status },
-        { new: true }
+      const { admin_action, payment_id } = req.body;
+      const payment = await PaymentModel.findById(payment_id).populate(
+        "patient"
       );
-     
-      const FindPaymentData = await PaymentModel.findById(payment_id);
-      const statusPayment = FindPaymentData.payment_status;
-      if (statusPayment === "Reject") {
-        const emailSent = await emailer(
-            PatientData.email,
-            "Payment Status",
-            `<h3><strong>Payment Reject Again</strong></h3>`
-          );
-      }else if (statusPayment === "Accept") {
-        const emailSent = await emailer(
-          PatientData.email,
-          "Payment Status",
-          `<h3><strong>Payment Success</strong></h3>`
+
+      if (admin_action === "reject") {
+        const rejectedPayment = await PaymentModel.findByIdAndUpdate(
+          payment_id,
+          { payment_status: "rejected" },
+          { new: true }
         );
-        const detailPayment = PaymentData.product_detail;
-        const appointmentData = {
-          psikiater_id : detailPayment.psikiater_id,
-          patient_id : detailPayment.patient_id,
-          appointment_date : detailPayment.appointment_date,
-          appointment_time : detailPayment.appointment_time,
-          complaint : detailPayment.complaint,
-          isOnline : detailPayment.isOnline
+
+        if (!rejectedPayment) {
+          throw new Error("Failed rejecting payment.");
         }
+
+        const email = emailer(
+          payment.patient.email,
+          "Your payment is rejected.",
+          `<h3>Payment with ID ${payment_id} is rejected by admin.</h3>`
+        );
+
+        if (!email) {
+          throw new Error("Failed sending email to user.");
+        }
+      } else if (admin_action === "accept") {
+        const acceptedPayment = await PaymentModel.findByIdAndUpdate(
+          payment_id,
+          { payment_status: "accepted" },
+          { new: true }
+        );
+
+        if (!acceptedPayment) {
+          throw new Error("Failed accepting payment.");
+        }
+
+        const appointmentData = {
+          psikiater_id: acceptedPayment.product_detail.psikiater_id,
+          patient_id: acceptedPayment.product_detail.patient_id,
+          appointment_date: acceptedPayment.product_detail.appointment_date,
+          appointment_time: acceptedPayment.product_detail.appointment_time,
+          complaint: acceptedPayment.product_detail.complaint,
+          allergy: acceptedPayment.product_detail.allergy,
+          isOnline: acceptedPayment.product_detail.isOnline,
+        };
+
         const appointment = await AppointmentModel.create(appointmentData);
 
+        if (!appointment) {
+          throw new Error("Failed create appointment from payment.");
+        }
+
+        const chatRoomData = {
+          idPsikiater: appointment.psikiater_id,
+          idPatient: appointment.patient_id,
+          consultationDate: appointment.appointment_date,
+          consultationTime: appointment.appointment_time,
+        };
+
+        const room = await chatroom.createChatroom(chatRoomData);
+
+        const updatedAppointment = await AppointmentModel.findByIdAndUpdate(
+          appointment._id,
+          { roomChat_id: room.id },
+          { new: true }
+        );
+
+        if (!updatedAppointment) {
+          throw new Error("Failed storing room id inside appointment document");
+        }
+
+        const email = emailer(
+          payment.patient.email,
+          "Your payment is accepted.",
+          `<h3>Payment with ID ${payment_id} is accepted by admin.</h3>`
+        );
+
+        if (!email) {
+          throw new Error("Failed sending email to user.");
+        }
       }
-        
-      res.status(200).json({
-        status: "Success",
-      });
+
+      res.status(204);
     } catch (error) {
       next(error);
     }
