@@ -32,7 +32,7 @@ const appointmentSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      default: "Unpaid",
+      default: "Paid",
     },
     isOnline: {
       type: Boolean,
