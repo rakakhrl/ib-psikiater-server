@@ -4,7 +4,7 @@ const upload = require("../middlewares/multer");
 const authorization = require("../middlewares/authorization");
 const { PATIENT, ADMIN } = require("../constants/role");
 
-Router.get("/pending", authorization(ADMIN), PaymentController.getAllPending);
+Router.get("/pending", PaymentController.getAllPending);
 Router.get("/:payment_id", PaymentController.getOneById);
 
 Router.use(authorization(PATIENT));
