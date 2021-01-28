@@ -9,7 +9,6 @@ const appointmentRouter = require("./appoinments");
 const paymentRouter = require("./payments");
 const verifyRouter = require("./verify");
 
-const approvalRouter = require("./approval");
 const path = require("path");
 
 const firebase = require("./firebase");
@@ -19,8 +18,6 @@ const authentication = require("../middlewares/authentication");
 Router.use("/user", firebase);
 
 Router.use("/payments", paymentRouter);
-
-Router.use("/approval-psikiater", approvalRouter);
 
 Router.use("/auth", authRoutes);
 
