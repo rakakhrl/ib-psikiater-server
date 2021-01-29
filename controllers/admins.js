@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const AdminModel = require("../models/admin");
@@ -9,9 +8,9 @@ const PORT = process.env.PORT;
 const { PSIKIATER } = require("../constants/role");
 const AppointmentModel = require("../models/appointments");
 const PaymentModel = require("../models/payments");
+const PsikiaterModel = require("../models/psikiaters");
 const emailer = require("../utilities/emailer");
 const chatroom = require("../utilities/chatroom");
-
 
 class AdminController {
   static createAdmin = async (req, res, next) => {
@@ -38,46 +37,78 @@ class AdminController {
       next(error);
     }
   };
-  static approvalPsikiater = async (req, res, next) => {
-    const { email, action } = req.body;
+
+  static getOneAdminById = async (req, res, next) => {
     try {
-      if (action === "reject") {
-        const emailSent = await emailer(
-          email,
-          "Reject",
-          `<h3>Oops sorry! registration has been reject Admin</h3>`
-        );
-        res.sendStatus(204);
+      const { admin_id } = req.params;
+
+      const admin = await AdminModel.findById(admin_id);
+
+      if (!admin) {
+        throw new Error("Cannot find admin.");
       }
 
-      const verificationToken = jwt.sign(
-        {
-          email: email,
-          role: PSIKIATER,
-        },
-        SECRET_KEY
-      );
-
-      const tokenVerify = await VerifyModel.create({
-        email: email,
-        activation_token: verificationToken,
+      res.status(200).json({
+        status: "success",
+        message: "Successfully get one admin",
+        data: admin,
       });
-
-      if (!tokenVerify) {
-        throw new Error("Failed storing verification token");
-      }
-
-      const emailSent = await emailer(
-        email,
-        "Verification Link",
-        `<h3><strong>Clink this link to verify your account: </strong>http://${SERVER_IP_ADDRESS}:${PORT}/verify-user/verify/${verificationToken}</h3>`
-      );
-      res.sendStatus(204);    
     } catch (error) {
       next(error);
     }
   };
 
+  static approvalPsikiater = async (req, res, next) => {
+    try {
+      const { admin_action, psychiatrist_id } = req.body;
+      const psychiatrist = await PsikiaterModel.findById(psychiatrist_id);
+
+      if (admin_action === "reject") {
+        const emailSent = await emailer(
+          psychiatrist.email,
+          "Registration rejected.",
+          `<h3>Sorry! your registration has been rejected by Admin</h3>`
+        );
+
+        if (!emailSent) {
+          throw new Error("Failed sending email to user");
+        }
+
+        res.sendStatus(204);
+      } else if (admin_action === "accept") {
+        const verificationToken = jwt.sign(
+          {
+            email: psychiatrist.email,
+            role: PSIKIATER,
+          },
+          SECRET_KEY
+        );
+
+        const tokenVerify = await VerifyModel.create({
+          email: psychiatrist.email,
+          activation_token: verificationToken,
+        });
+
+        if (!tokenVerify) {
+          throw new Error("Failed storing verification token");
+        }
+
+        const emailSent = await emailer(
+          psychiatrist.email,
+          "Registration Accepted",
+          `<h3><strong>Your registration has been accepted by admin, please clink this link to verify your account: </strong><a href="http://${SERVER_IP_ADDRESS}:${PORT}/verify-user/verify/${verificationToken}">Verification Link</a></h3>`
+        );
+
+        if (!emailSent) {
+          throw new Error("Failed sending email to user.");
+        }
+
+        res.sendStatus(204);
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
 
   static paymentApproval = async (req, res, next) => {
     try {
@@ -106,11 +137,13 @@ class AdminController {
         if (!email) {
           throw new Error("Failed sending email to user.");
         }
+
+        res.sendStatus(204);
       } else if (admin_action === "accept") {
         const acceptedPayment = await PaymentModel.findByIdAndUpdate(
           payment_id,
           { payment_status: "accepted" },
-          { new: true }
+          { new: true, lean: true }
         );
 
         if (!acceptedPayment) {
@@ -133,23 +166,25 @@ class AdminController {
           throw new Error("Failed create appointment from payment.");
         }
 
-        const chatRoomData = {
-          idPsikiater: appointment.psikiater_id,
-          idPatient: appointment.patient_id,
-          consultationDate: appointment.appointment_date,
-          consultationTime: appointment.appointment_time,
-        };
+        if (appointment.isOnline) {
+          const chatRoomData = {
+            idPsikiater: appointment.psikiater_id.toString(),
+            idPatient: appointment.patient_id.toString(),
+            consultationDate: appointment.appointment_date,
+            consultationTime: appointment.appointment_time,
+          };
 
-        const room = await chatroom.createChatroom(chatRoomData);
-
-        const updatedAppointment = await AppointmentModel.findByIdAndUpdate(
-          appointment._id,
-          { roomChat_id: room.id },
-          { new: true }
-        );
-
-        if (!updatedAppointment) {
-          throw new Error("Failed storing room id inside appointment document");
+          const room = await chatroom.createChatroom(chatRoomData);
+          const updatedAppointment = await AppointmentModel.findByIdAndUpdate(
+            appointment._id,
+            { roomChat_id: room.id },
+            { new: true }
+          );
+          if (!updatedAppointment) {
+            throw new Error(
+              "Failed storing room id inside appointment document"
+            );
+          }
         }
 
         const email = emailer(
@@ -161,9 +196,9 @@ class AdminController {
         if (!email) {
           throw new Error("Failed sending email to user.");
         }
-      }
 
-      res.status(204);
+        res.sendStatus(204);
+      }
     } catch (error) {
       next(error);
     }

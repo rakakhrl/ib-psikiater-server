@@ -17,8 +17,6 @@ const adminRouter = require("./admins");
 const authentication = require("../middlewares/authentication");
 Router.use("/user", firebase);
 
-Router.use("/payments", paymentRouter);
-
 Router.use("/auth", authRoutes);
 
 Router.use("/psikiater", psikiaterRouter);
@@ -28,6 +26,8 @@ Router.use("/verify-user", verifyRouter);
 Router.use("/admin", adminRouter);
 
 Router.use(authentication);
+
+Router.use("/payments", paymentRouter);
 
 Router.use("/appointments", appointmentRouter);
 
