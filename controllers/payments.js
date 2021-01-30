@@ -20,7 +20,6 @@ class PaymentController {
       appointment_time,
       isOnline,
       product_price,
-      payment_method,
     } = req.body;
 
     try {
