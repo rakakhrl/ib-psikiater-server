@@ -15,7 +15,6 @@ class PaymentController {
       product_type,
       product_detail,
       product_price,
-      payment_method,
     } = req.body;
 
     try {
