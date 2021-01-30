@@ -9,16 +9,11 @@ const PORT = process.env.PORT;
 
 class PaymentController {
   static paymentCheckout = async (req, res, next) => {
+    // TODO: destructure product_detail
     const {
       patient,
       product_type,
-      complaint,
-      allergy,
-      psikiater_id,
-      patient_id,
-      appointment_date,
-      appointment_time,
-      isOnline,
+      product_detail,
       product_price,
       payment_method,
     } = req.body;
@@ -28,15 +23,16 @@ class PaymentController {
         patient: patient,
         product_type: product_type,
         product_detail: {
-          complaint: complaint,
-          allergy: allergy,
-          psikiater_id: psikiater_id,
-          patient_id: patient_id,
-          appointment_date: appointment_date,
-          appointment_time: appointment_time,
-          isOnline: isOnline,
+          complaint: product_detail.complaint,
+          allergy: product_detail.allergy,
+          psikiater_id: product_detail.psikiater_id,
+          patient_id: product_detail.patient_id,
+          appointment_date: product_detail.appointment_date,
+          appointment_time: product_detail.appointment_time,
+          isOnline: product_detail.isOnline,
         },
         product_price: product_price,
+        payment_method: payment_method,
       };
       const payment = await PaymentModel.create(paymentData);
       res.status(201).json({
