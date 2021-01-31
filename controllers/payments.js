@@ -9,12 +9,7 @@ const PORT = process.env.PORT;
 
 class PaymentController {
   static paymentCheckout = async (req, res, next) => {
-    const {
-      patient,
-      product_type,
-      product_detail,
-      product_price,
-    } = req.body;
+    const { patient, product_type, product_detail, product_price } = req.body;
 
     try {
       const paymentData = {
