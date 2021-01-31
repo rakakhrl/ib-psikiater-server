@@ -9,7 +9,6 @@ const PORT = process.env.PORT;
 
 class PaymentController {
   static paymentCheckout = async (req, res, next) => {
-    // TODO: destructure product_detail
     const {
       patient,
       product_type,
@@ -32,7 +31,6 @@ class PaymentController {
           isOnline: product_detail.isOnline,
         },
         product_price: product_price,
-        payment_method: payment_method,
       };
       const payment = await PaymentModel.create(paymentData);
       res.status(201).json({
