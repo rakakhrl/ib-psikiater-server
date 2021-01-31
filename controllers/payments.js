@@ -9,9 +9,8 @@ const PORT = process.env.PORT;
 
 class PaymentController {
   static paymentCheckout = async (req, res, next) => {
-    // TODO: destructure product_detail
     const { patient, product_type, product_detail, product_price } = req.body;
-    console.log(product_detail);
+
     try {
       const paymentData = {
         patient: patient,
