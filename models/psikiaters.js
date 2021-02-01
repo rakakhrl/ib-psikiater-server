@@ -4,7 +4,7 @@ const psikiaterSchema = new mongoose.Schema(
   {
     is_active: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     first_name: {
       type: String,
@@ -47,7 +47,8 @@ const psikiaterSchema = new mongoose.Schema(
     },
     avatar_url: {
       type: String,
-      default: " ",
+      default:
+        "https://www.suitdoctors.com/wp-content/uploads/2016/11/dummy-man-570x570.png",
     },
     info: {
       experience_year: {
@@ -75,6 +76,12 @@ const psikiaterSchema = new mongoose.Schema(
     fees: {
       type: Number,
       default: "",
+    },
+    specialize: {
+      type: String,
+      required: true,
+      maxlength: 30,
+      set: (v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase(),
     },
   },
   {

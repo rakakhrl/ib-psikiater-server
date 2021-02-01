@@ -1,9 +1,14 @@
 const PatientsModel = require("../models/patients");
 const PsikiaterModel = require("../models/psikiaters");
+const AdminModel = require("../models/admin");
+const VerifyModel = require("../models/verify");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY;
-const { PATIENT, PSIKIATER } = require("../constants/role");
+const SERVER_IP_ADDRESS = process.env.SERVER_IP_ADDRESS;
+const PORT = process.env.PORT;
+const { PATIENT, PSIKIATER, ADMIN } = require("../constants/role");
+const emailer = require("../utilities/emailer");
 
 class AuthController {
   static registerPatient = async (req, res, next) => {
@@ -30,19 +35,37 @@ class AuthController {
 
       const patient = await PatientsModel.create(patientData);
 
-      const tokenPayload = {
-        user_id: patient._id,
-        role: PATIENT,
-      };
+      const verificationToken = jwt.sign(
+        {
+          email: patient.email,
+          role: PATIENT,
+        },
+        SECRET_KEY
+      );
 
-      const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
+      const tokenDoc = await VerifyModel.create({
+        email: patient.email,
+        activation_token: verificationToken,
+      });
+
+      if (!tokenDoc) {
+        throw new Error("Failed storing verification token");
+      }
+
+      const emailSent = await emailer(
+        patient.email,
+        "Verification Link",
+        `<h3><strong>Clink this link to verify your account: </strong><a href="http://${SERVER_IP_ADDRESS}:${PORT}/verify-user/verify/${verificationToken}">Verification Link</a></h3>`
+      );
+
+      if (!emailSent.messageId) {
+        throw new Error("Failed sending email verification");
+      }
 
       res.status(201).json({
         status: "Success",
         message: "Success create patient data.",
         data: patient,
-        role: PATIENT,
-        token: jwtToken,
       });
     } catch (error) {
       next(error);
@@ -62,6 +85,7 @@ class AuthController {
         experience_year,
         region,
         fees,
+        specialize,
       } = req.body;
 
       const psikiaterData = {
@@ -77,22 +101,17 @@ class AuthController {
           region: region,
         },
         fees: fees,
+        specialize: specialize,
       };
       const psikiater = await PsikiaterModel.create(psikiaterData);
 
-      const tokenPayload = {
-        user_id: psikiater._id,
-        role: PSIKIATER,
-      };
-
-      const jwtToken = jwt.sign(tokenPayload, SECRET_KEY);
+      if (!psikiater) {
+        throw new Error("Failed registering psychiatrist");
+      }
 
       res.status(201).json({
         status: "created",
         message: "Success create psikiater data.",
-        role: PSIKIATER,
-        data: psikiater,
-        token: jwtToken,
       });
     } catch (error) {
       next(error);
@@ -105,9 +124,18 @@ class AuthController {
 
       const patient = await PatientsModel.findOne({ email: email });
       const psikiater = await PsikiaterModel.findOne({ email: email });
+      const admin = await AdminModel.findOne({ email: email });
 
-      if (!patient && !psikiater) {
+      if (!patient && !psikiater && !admin) {
         throw new Error("Email or password is invalid.");
+      }
+
+      if (patient && !patient.is_active) {
+        throw new Error("Your email address is not verified.");
+      }
+
+      if (psikiater && !psikiater.is_active) {
+        throw new Error("Your email address is not verified.");
       }
 
       if (patient && bcrypt.compareSync(password, patient.password)) {
@@ -131,6 +159,19 @@ class AuthController {
           data: psikiater,
           token: jwt.sign(
             { user_id: psikiater._id, role: PSIKIATER },
+            process.env.SECRET_KEY
+          ),
+        });
+      }
+
+      if (admin && bcrypt.compareSync(password, admin.password)) {
+        res.status(200).json({
+          status: "success",
+          message: "Login successfull.",
+          role: ADMIN,
+          data: admin,
+          token: jwt.sign(
+            { user_id: admin._id, role: ADMIN },
             process.env.SECRET_KEY
           ),
         });
